@@ -1,21 +1,23 @@
 import express from "express";
-import Folders from "../models/folders";
+import * as controller from "../controllers/folders";
 
 let folderRouter = express.Router();
 
 // for test
-folderRouter.get("/1", (req, res, next) => {
-    const folder = new Folders();
-    folder.from_db_func(1).then(isSuccess => {
-        if (!isSuccess) {
-            res.send("error!")
-            return;
-        }
+folderRouter.get("/:unique_key", (req, res, next) => {
+    controller.getFolder(req, res);
+});
 
-        console.log(`Router: ${folder}`);
+folderRouter.post("/:unique_key", (req, res, next) => {
 
-        res.send(folder);
-    });
+});
+
+folderRouter.delete("/:unique_key", (req, res, next) => {
+
+});
+
+folderRouter.put("/:unique_key", (req, res, next) => {
+
 });
 
 export default folderRouter;
