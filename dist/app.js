@@ -14,6 +14,16 @@ const app = express_1.default();
 app.use(morgan_1.default('dev'));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
+async function db_test2() {
+    try {
+        const [rows] = await db_pool_1.default.query("SELECT 1 + 1 AS solution");
+        return rows;
+    }
+    catch (err) {
+        console.log('DB Error');
+        return false;
+    }
+}
 async function db_test() {
     try {
         const connection = await db_pool_1.default.getConnection();
@@ -36,7 +46,7 @@ async function db_test() {
     }
 }
 app.use("/test", function (req, res, next) {
-    db_test().then(result => {
+    db_test2().then(result => {
         console.log(result);
         res.send(result);
     });
