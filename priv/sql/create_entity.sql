@@ -5,6 +5,7 @@ CREATE TABLE entity (
     owner_id INT unsigned NOT NULL,
     parent_id INT unsigned NOT NULL,
     thumbnail_url VARCHAR(255) NULL,
+    is_tab BOOLEAN NOT NULL,
     modified_at DATETIME NOT NULL,
     deleted_at DATETIME NULL,
     PRIMARY KEY (id)
