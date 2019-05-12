@@ -14,6 +14,16 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+async function db_test2() {
+    try {
+        const [rows] = await pool.query("SELECT 1 + 1 AS solution");
+        return rows;
+    } catch (err) {
+        console.log('DB Error');
+        return false;
+    }
+}
+
 async function db_test(): Promise<[string, any]> {
     try {
         const connection = await pool.getConnection();
@@ -34,7 +44,7 @@ async function db_test(): Promise<[string, any]> {
 }
 
 app.use("/test", function(req, res, next) {
-    db_test().then(result => {
+    db_test2().then(result => {
         console.log(result);
         res.send(result);
     });
