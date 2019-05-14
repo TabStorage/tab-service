@@ -9,17 +9,29 @@ class Tabs implements Entity {
     url: string
     modified_time: string
     thumbnail_url: string
+    is_public: boolean
+    version: number
+    modified_at: string
+    ownership_id: number
 
-    //todo: add owner info
-    from_db_func = async (id: number) => {
+    create = async () => {
+        return new Promise<boolean>((resolve, reject) => resolve(true));
+    }
+
+    get = async (id: number) => {
         return new Promise<boolean>((resolve, reject) => {
             resolve(true);
         });
     }
-    to_db_func = async () => {
+
+    update = async (args: object) => {
         return new Promise<boolean>((resolve, reject) => {
             resolve(true);
         })
+    }
+
+    delete = async () => {
+        return new Promise<boolean>((resolve, reject) => resolve(true));
     }
 }
 

@@ -1,8 +1,16 @@
-interface FromDBFunc {
+interface CreateFunc {
+    (): Promise<boolean>
+}
+
+interface GetFunc {
     (id: number): Promise<boolean>
 }
 
-interface ToDBFunc {
+interface UpdateFunc {
+    (args: object): Promise<boolean>
+}
+
+interface DeleteFunc {
     (): Promise<boolean>
 }
 
@@ -10,11 +18,17 @@ interface Entity {
     id: number
     name: string
     url: string
-    modified_time: string
-    thumbnail_url?: string
-    //todo: add owner info
-    from_db_func: FromDBFunc
-    to_db_func: ToDBFunc
+    thumbnail_url? : string
+    is_tab?: boolean
+    is_public: boolean
+    version: number
+    modified_at: string
+    ownership_id: number
+
+    create: CreateFunc
+    get: GetFunc
+    update: UpdateFunc
+    delete: DeleteFunc
 }
 
 export default Entity;
