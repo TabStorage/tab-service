@@ -1,7 +1,8 @@
 import pool from "../db_pool";
 import Entity from "./entity";
 import * as datetime from "../utils/datetime"
-import { rejects } from "assert";
+
+// TODO: add profer validation
 
 class Folders implements Entity {
     constructor() {
@@ -10,15 +11,48 @@ class Folders implements Entity {
 
     id: number
     name: string
+    // used for tab stroage link
     url: string
     parent_id: number
+    root_id: number
     is_public: boolean
+    is_group: boolean
     version: number
     modified_at: string
-    ownership_id: number
+    owner_id: number
 
-    create =  async () => {
-        return new Promise<boolean>((resolve, reject) => resolve(true));
+    create = async () => {
+        if (this.id <= 0) {
+            console.log('Empty id');
+            return false;
+        }
+
+        try {
+            let sql: string;
+            let params: Array<any>;
+
+            // treat special for root folder
+            if (this.root_id == 0 && this.parent_id == 0) {
+                // here do not treat root_id & parent_id
+                sql = "INSERT INTO entity(is_tab, name, url, is_public, \
+                        is_group, version, modified_at, owner_id) \
+                        VALUES (false, ?, ?, ?, ?, ?, ?, ?)";
+                params = [this.name, this.url, this.is_public,
+                    this.is_group, this.version, datetime.ISODateString(new Date()), this.owner_id];
+            } else {
+                sql = "INSERT INTO entity(is_tab, name, url, parent_id, root_id, is_public, \
+                        is_group, version, modified_at, owner_id) \
+                        VALUES (false, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                params = [this.name, this.url, this.parent_id, this.root_id, this.is_public,
+                    this.is_group, this.version, datetime.ISODateString(new Date()), this.owner_id];
+            }
+            
+            const [result] = await pool.query(sql, params);
+            return true;
+        } catch(err) {
+            console.log(`Failed to create a folder ${this.id}!\nerr: ${err}`)
+            return false;
+        }
     }
 
     get = async (id: number) => {
@@ -38,8 +72,10 @@ class Folders implements Entity {
             this.name = result[0].name;
             this.url = result[0].url;
             this.parent_id = result[0].parent_id;
-            this.ownership_id = result[0].ownership_id;
+            this.root_id = result[0].root_id;
+            this.owner_id = result[0].ownership_id;
             this.is_public = result[0].is_public;
+            this.is_group = result[0].is_group;
             this.version = result[0].version;
             this.modified_at = result[0].modified_at;
 
@@ -58,13 +94,8 @@ class Folders implements Entity {
 
         try {
             const [result] = await pool.query(
-                "UPDATE entity SET ? WHERE id = ?",
-                [args, this.id]
-                //[this.name, this.url, this.parent_id, this.is_public, this.version, 
-                //    datetime.ISODateString(new Date()), this.id]
-            )
+                "UPDATE entity SET ? WHERE id = ?", [args, this.id]);
 
-            console.log(result);
             return true;
         } catch(err) {
             console.log(`Failed to save a folder ${this.id}\nerr: ${err}`)
@@ -73,7 +104,14 @@ class Folders implements Entity {
     }
 
     delete = async () => {
-        return new Promise<boolean>((resolve, reject) => resolve(true));
+        try {
+            // TODO: try recursive delete through job queue
+
+            return true;
+        } catch(err) {
+            console.log(`Failed to delete a folder ${this.id}\nerr: ${err}`)
+            return false;
+        }
     };
 }
 

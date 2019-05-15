@@ -21,9 +21,12 @@ interface Entity {
     thumbnail_url? : string
     is_tab?: boolean
     is_public: boolean
+    is_group: boolean
     version: number
     modified_at: string
-    ownership_id: number
+    owner_id: number
+    parent_id: number
+    root_id: number
 
     create: CreateFunc
     get: GetFunc
