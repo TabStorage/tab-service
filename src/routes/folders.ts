@@ -1,23 +1,27 @@
 import express from "express";
+import async_handler from "express-async-handler";
 import * as controller from "../controllers/folders";
+import unique_key_parser from "../middleware/unique_key_parser";
 
 let folderRouter = express.Router();
 
-// for test
-folderRouter.get("/:unique_key", (req, res, next) => {
-    controller.getFolder(req, res);
-});
+folderRouter.param('unique_key', unique_key_parser);
 
-folderRouter.post("/:unique_key", (req, res, next) => {
-});
+folderRouter.get("/:unique_key", async_handler(async (req, res, next) => {
+    const result = await controller.getFolder(req, res);
+    result.send_to(res);
+}));
 
-folderRouter.delete("/:unique_key", (req, res, next) => {
-
-});
-
-// for test
-folderRouter.get("/test/:unique_key", (req, res, next) => {
+folderRouter.post("/:unique_key", async_handler(async (req, res, next) => {
     controller.setFolder(req, res);
-});
+}));
+
+folderRouter.delete("/:unique_key", async_handler(async (req, res, next) => {
+    controller.deleteFolder(req, res);
+}));
+
+folderRouter.put("/:unique_key", async_handler(async (req, res, next) => {
+    controller.setFolder(req, res);
+}));
 
 export default folderRouter;
