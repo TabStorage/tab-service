@@ -1,8 +1,10 @@
 import express from "express";
 import createError from "http-errors";
 import logger from "morgan";
+import async_handler from "express-async-handler";
 
 import pool from "./db_pool";
+import Context from "./context";
 
 import tabRouter from "./routes/tabs";
 import folderRouter from "./routes/folders";
@@ -14,46 +16,16 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-async function db_test2() {
-    try {
-        const [rows] = await pool.query("SELECT 1 + 1 AS solution");
-        return rows;
-    } catch (err) {
-        console.log('DB Error');
-        return false;
-    }
-}
-
-async function db_test(): Promise<[string, any]> {
-    try {
-        const connection = await pool.getConnection();
-        try {
-        const [rows, fields] = await connection.query("SELECT 1 + 1 AS solution");
-        console.log(`rows: ${rows}, fields: ${fields}`);
-        return [rows, fields];
-        } catch(err) {
-            console.log("Query Error");
-            return [null, null];
-        } finally {
-            connection.release();
-        }
-    } catch (err) {
-        console.log('DBError');
-        return [null, null];
-    }
-}
-
-app.use("/test", function(req, res, next) {
-    db_test2().then(result => {
-        console.log(result);
-        res.send(result);
-    });
-});
+// add context per request
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    req.context = new Context();
+    next();
+})
 
 app.use("/", tabRouter);
 app.use("/folders", folderRouter);
 
-app.use(function(req, res, next) {
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
     next(createError(404));
 });
 
