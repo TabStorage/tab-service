@@ -1,6 +1,7 @@
 import pool from "../db_pool";
 import Entity from "./entity";
 import * as datetime from "../utils/datetime"
+import logger from "../logger"
 
 // TODO: add profer validation
 
@@ -23,7 +24,7 @@ class Folders implements Entity {
 
     create = async () => {
         if (this.id <= 0) {
-            console.log('Empty id');
+            logger.info('Empty id');
             return false;
         }
 
@@ -50,7 +51,7 @@ class Folders implements Entity {
             const [result] = await pool.query(sql, params);
             return true;
         } catch(err) {
-            console.log(`Failed to create a folder ${this.id}!\nerr: ${err}`)
+            logger.error(`Failed to create a folder ${this.id}!\nerr: ${err}`)
             return false;
         }
     }
@@ -62,10 +63,10 @@ class Folders implements Entity {
                 "SELECT * FROM entity WHERE `id` = ?", [this.id]);
 
             if (result.length != 1) {
-                console.log(`Inexists folder ${id}`)
+                logger.info(`Inexists folder ${id}`)
                 return false;
             } else if (result[0].is_tab) {
-                console.log(`Invalid folder ${id}`)
+                logger.info(`Invalid folder ${id}`)
                 return false;
             }
 
@@ -81,14 +82,14 @@ class Folders implements Entity {
 
             return true;
         } catch(err) {
-            console.log(`Failed to load a folder ${id}!\nerr: ${err}`)
+            logger.error(`Failed to load a folder ${id}!\nerr: ${err}`)
             return false;
         }
     }
 
     update = async (args: object) => {
         if (this.id < 0) {
-            console.log(`Invalid id ${this.id}`);
+            logger.info(`Invalid id ${this.id}`);
             return false;
         }
 
@@ -98,7 +99,7 @@ class Folders implements Entity {
 
             return true;
         } catch(err) {
-            console.log(`Failed to save a folder ${this.id}\nerr: ${err}`)
+            logger.error(`Failed to save a folder ${this.id}\nerr: ${err}`)
             return false;
         }
     }
@@ -109,7 +110,7 @@ class Folders implements Entity {
 
             return true;
         } catch(err) {
-            console.log(`Failed to delete a folder ${this.id}\nerr: ${err}`)
+            logger.error(`Failed to delete a folder ${this.id}\nerr: ${err}`)
             return false;
         }
     }

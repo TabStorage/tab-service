@@ -1,6 +1,7 @@
 import express from "express";
 import createError from "http-errors";
 import logger from "morgan";
+import permanent_logger from "./logger";
 
 import request_context from "./middlewares/request_context";
 
@@ -30,5 +31,5 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
 });
 
 app.listen(port, () => {
-    console.log( `server started at http://localhost:${port}` );
+    console.log(`server started at http://localhost:${port}`);
 } );

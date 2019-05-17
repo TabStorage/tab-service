@@ -12,12 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/date-utils": "^1.2.0",
     "@types/http-errors": "^1.6.1",
     "@types/morgan": "^1.7.35",
-    "date-utils": "^1.2.21",
     "express": "^4.16.4",
     "express-async-handler": "^1.1.4",
+    "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.5",
     "winston": "^3.2.1",

@@ -1,6 +1,7 @@
 import pool from "../db_pool";
 import Entity from "./entity";
 import * as datetime from "../utils/datetime";
+import logger from "../logger";
 
 // TODO: add profer validation
 
@@ -23,18 +24,18 @@ class Tabs implements Entity {
 
     create = async () => {
         if (this.id <= 0) {
-            console.log('Empty id');
+            logger.info('Empty id');
             return false;
         }
 
         // tab always need parent folder 
         if (this.parent_id <= 0) {
-            console.log('Empty parent_id');
+            logger.info('Empty parent_id');
             return false;
         }
 
         if (this.root_id <= 0) {
-            console.log(`Empty parent_id`);
+            logger.info(`Empty parent_id`);
             return false;
         }
 
@@ -50,7 +51,7 @@ class Tabs implements Entity {
             const [result] = await pool.query(sql, params);
             return true;
         } catch(err) {
-            console.log(`Failed to create a tab ${this.id}\nerr: ${err}`)
+            logger.error(`Failed to create a tab ${this.id}\nerr: ${err}`)
             return false;
         }
     }
@@ -63,10 +64,10 @@ class Tabs implements Entity {
                 "SELECT * FROM entity WHERE `id` = ?", [this.id]);
 
             if (result.length != 1) {
-                console.log(`Inexists tab ${id}`);
+                logger.info(`Inexists tab ${id}`);
                 return false;
             } else if (!result[0].is_tab) {
-                console.log(`Invalid tab ${id}`);
+                logger.info(`Invalid tab ${id}`);
                 return false;
             }
 
@@ -83,7 +84,7 @@ class Tabs implements Entity {
 
             return true;
         } catch(err) {
-            console.log(`Failed to load a tab ${id}!\nerr: ${err}`)
+            logger.error(`Failed to load a tab ${id}!\nerr: ${err}`)
             return false;
         }
     }
