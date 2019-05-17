@@ -74,8 +74,8 @@ class Folders implements Entity {
             this.parent_id = result[0].parent_id;
             this.root_id = result[0].root_id;
             this.owner_id = result[0].ownership_id;
-            this.is_public = result[0].is_public;
-            this.is_group = result[0].is_group;
+            this.is_public = result[0].is_public == 1;
+            this.is_group = result[0].is_group == 1;
             this.version = result[0].version;
             this.modified_at = result[0].modified_at;
 
@@ -112,7 +112,20 @@ class Folders implements Entity {
             console.log(`Failed to delete a folder ${this.id}\nerr: ${err}`)
             return false;
         }
-    };
+    }
+
+    toJSON() { 
+        return {
+            id: this.id,
+            name: this.name,
+            url: this.url,
+            owner_id: this.owner_id,
+            is_public: this.is_public,
+            is_group: this.is_group,
+            version: this.version,
+            modified_at: this.modified_at
+        };
+    }
 }
 
 export default Folders;
