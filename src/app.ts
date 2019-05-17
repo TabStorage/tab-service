@@ -4,7 +4,7 @@ import logger from "morgan";
 import async_handler from "express-async-handler";
 
 import pool from "./db_pool";
-import Context from "./context";
+import request_context from "./middlewares/request_context";
 
 import tabRouter from "./routes/tabs";
 import folderRouter from "./routes/folders";
@@ -18,10 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // add context per request
-app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
-    req.context = new Context();
-    next();
-})
+app.use(request_context);
 
 app.use("/api", tabRouter);
 app.use("/api/folders", folderRouter);
