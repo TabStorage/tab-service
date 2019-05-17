@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/date-utils": "^1.2.0",
     "@types/http-errors": "^1.6.1",
     "@types/morgan": "^1.7.35",
     "date-utils": "^1.2.21",
