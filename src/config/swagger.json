@@ -1,0 +1,120 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Tab Service API",
+    "version": "1.0.0",
+    "description": "Tab Service API Specification"
+  },
+  "host": "localhost",
+  "basePath": "/api",
+  "schemes": ["http", "https"],
+  "produces": ["application/json"],
+  "paths": {
+    "/folders/{unique_key}": {
+      "get": {
+        "tags": ["Folder"],
+        "summary": "Get folder info",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Folder"],
+        "summary": "Create a new folder",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "put": {
+        "tags": ["Folder"],
+        "summary": "Modify info of folder",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Folder"],
+        "summary": "Delete a folder",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
