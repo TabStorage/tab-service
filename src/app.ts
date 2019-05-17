@@ -8,6 +8,7 @@ import Context from "./context";
 
 import tabRouter from "./routes/tabs";
 import folderRouter from "./routes/folders";
+import docsRouter from "./routes/api_docs";
 
 const port = process.env.port || 80;
 const app = express();
@@ -22,8 +23,12 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
     next();
 })
 
-app.use("/", tabRouter);
-app.use("/folders", folderRouter);
+app.use("/api", tabRouter);
+app.use("/api/folders", folderRouter);
+
+if (app.get('env') === "development") {
+    app.use("/", docsRouter);
+}
 
 app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
     next(createError(404));

@@ -1,7 +1,7 @@
 import express from "express";
 import async_handler from "express-async-handler";
 import * as controller from "../controllers/folders";
-import unique_key_parser from "../middleware/unique_key_parser";
+import unique_key_parser from "../middlewares/unique_key_parser";
 
 let folderRouter = express.Router();
 
