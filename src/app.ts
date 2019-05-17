@@ -1,9 +1,7 @@
 import express from "express";
 import createError from "http-errors";
 import logger from "morgan";
-import async_handler from "express-async-handler";
 
-import pool from "./db_pool";
 import request_context from "./middlewares/request_context";
 
 import tabRouter from "./routes/tabs";
