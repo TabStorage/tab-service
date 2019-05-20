@@ -22,6 +22,8 @@ class Tabs implements Entity {
     root_id: number
     modified_at: string
 
+    is_tab: boolean = true;
+
     create = async () => {
         if (this.id <= 0) {
             logger.info('Empty id');
@@ -36,6 +38,11 @@ class Tabs implements Entity {
 
         if (this.root_id <= 0) {
             logger.info(`Empty parent_id`);
+            return false;
+        }
+
+        if (!this.is_tab) {
+            logger.info(`Cannot save folder through Tabs`);
             return false;
         }
 
@@ -90,10 +97,25 @@ class Tabs implements Entity {
     }
 
     update = async (args: object) => {
-        // TODO: implement here
-        return new Promise<boolean>((resolve, reject) => {
-            resolve(true);
-        })
+        if (this.id < 0) {
+            logger.info(`Invalid id ${this.id}`);
+            return false;
+        }
+
+        if (!this.is_tab) {
+            logger.info(`Cannot change tab to folder`);
+            return false;
+        }
+
+        try {
+            const [result] = await pool.query(
+                "UPDATE entity SET ? WHERE id = ?", [args, this.id]);
+
+            return true;
+        } catch(err) {
+            logger.error(`Faield to update a tab ${this.id}\nerr: ${err}`);
+            return false;
+        }
     }
 
     delete = async () => {

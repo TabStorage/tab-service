@@ -22,9 +22,16 @@ class Folders implements Entity {
     modified_at: string
     owner_id: number
 
+    is_tab: boolean = false;
+
     create = async () => {
         if (this.id <= 0) {
             logger.info('Empty id');
+            return false;
+        }
+
+        if (this.is_tab) {
+            logger.info('Cannot save tab through Folders');
             return false;
         }
 
@@ -90,6 +97,11 @@ class Folders implements Entity {
     update = async (args: object) => {
         if (this.id < 0) {
             logger.info(`Invalid id ${this.id}`);
+            return false;
+        }
+
+        if (this.is_tab) {
+            logger.info(`Cannot change folder to tab`);
             return false;
         }
 
