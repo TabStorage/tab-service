@@ -5,7 +5,7 @@ import unique_key_parser from "../middlewares/unique_key_parser";
 
 let folderRouter = express.Router();
 
-folderRouter.param('unique_key', unique_key_parser);
+folderRouter.param('unique_key', unique_key_parser)
 
 folderRouter.get("/:unique_key", async_handler(async (req, res, next) => {
     const result = await controller.getFolder(req, res);
