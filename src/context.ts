@@ -4,11 +4,11 @@ class Context {
     constructor() { }
 
     set<T>(key: string, value: T) {
-        this.key = value;
+        this[key] = value;
     }
 
     get<T>(key: string): T {
-        return this.key;
+        return this[key];
     }
 
     [key: string]: any
