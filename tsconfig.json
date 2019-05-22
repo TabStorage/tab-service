@@ -8,15 +8,14 @@
         "resolveJsonModule": true,
         "sourceMap": true,
         "outDir": "dist",
-        "baseUrl": ".",
+        "baseUrl": "src",
         "paths": {
-            "@middlewares/*": ["src/middlewares/*"],
-            "@utils/*": ["src/utils/*"],
-            "@models/*": ["src/models/*"],
-            "@routes/*": ["src/routes/*"],
-            "@controllers/*": ["src/controllers/*"],
-            "@config/*": ["src/config/*"],
-            "*": ["src/*"]
+            "@middlewares/*": ["middlewares/*"],
+            "@utils/*": ["utils/*"],
+            "@models/*": ["models/*"],
+            "@routes/*": ["routes/*"],
+            "@controllers/*": ["controllers/*"],
+            "@config/*": ["config/*"],
         }
     },
     "include": [

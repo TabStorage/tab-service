@@ -1,15 +1,17 @@
+require('module-alias/register')
+
 import express from "express";
 import createError from "http-errors";
 import logger, { token } from "morgan";
-import permanent_logger from "./utils/logger";
+import permanent_logger from "@utils/logger";
 
-import request_context from "./middlewares/request_context";
-import error_handler from "./middlewares/error_handler";
-import token_validator from "./middlewares/token_validator";
+import request_context from "@middlewares/request_context";
+import error_handler from "@middlewares/error_handler";
+import token_validator from "@middlewares/token_validator";
 
-import tabRouter from "./routes/tabs";
-import folderRouter from "./routes/folders";
-import docsRouter from "./routes/api_docs";
+import tabRouter from "@routes/tabs";
+import folderRouter from "@routes/folders";
+import docsRouter from "@routes/api_docs";
 
 const port = process.env.port || 80;
 const app = express();
