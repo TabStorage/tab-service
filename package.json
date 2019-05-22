@@ -9,6 +9,15 @@
     "test": "mocha -r ts-node/register tests/**/*.test.ts",
     "testWithCoverage": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha -r ts-node/register tests/**/*.test.ts && nyc report"
   },
+  "_moduleAliases": {
+    "@middlewares/*": "dist/middlewares/*",
+    "@utils/*": "dist/utils/*",
+    "@models/*": "dist/models/*",
+    "@routes/*": "dist/routes/*",
+    "@controllers/*": "dist/controllers/*",
+    "@config/*": "dist/config/*",
+    "*": "dist/*"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -21,6 +30,7 @@
     "express": "^4.16.4",
     "express-async-handler": "^1.1.4",
     "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.0",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.5",

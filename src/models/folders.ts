@@ -1,7 +1,7 @@
-import pool from "../db_pool";
-import Entity from "./entity";
-import * as datetime from "../utils/datetime"
-import logger from "../logger"
+import pool from "@utils/db_pool";
+import Entity from "@models/entity";
+import * as datetime from "@utils/datetime";
+import logger from "@utils/logger";
 
 // TODO: add profer validation
 

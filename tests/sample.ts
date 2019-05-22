@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect, assert } from "chai";
 
 describe('calculate', function() {
   it('add', function() {

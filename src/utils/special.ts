@@ -1,4 +1,4 @@
-import Entity from "../models/entity";
+import Entity from "@models/entity";
 
 /*
 *   special link

@@ -1,5 +1,5 @@
 import express from "express";
-import ErrorCode from "./error_code";
+import ErrorCode from "@utils/error_code";
 
 interface ResponsableObject {
     error_code: number

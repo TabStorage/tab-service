@@ -10,12 +10,16 @@
         "outDir": "dist",
         "baseUrl": ".",
         "paths": {
-            "*": [
-                "node_modules/*"
-            ]
+            "@middlewares/*": ["src/middlewares/*"],
+            "@utils/*": ["src/utils/*"],
+            "@models/*": ["src/models/*"],
+            "@routes/*": ["src/routes/*"],
+            "@controllers/*": ["src/controllers/*"],
+            "@config/*": ["src/config/*"],
+            "*": ["src/*"]
         }
     },
     "include": [
         "src/**/*"
-    ]
+    ],
 }

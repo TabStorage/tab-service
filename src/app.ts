@@ -1,7 +1,7 @@
 import express from "express";
 import createError from "http-errors";
 import logger, { token } from "morgan";
-import permanent_logger from "./logger";
+import permanent_logger from "./utils/logger";
 
 import request_context from "./middlewares/request_context";
 import error_handler from "./middlewares/error_handler";

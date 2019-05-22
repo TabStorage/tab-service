@@ -1,7 +1,7 @@
 import express from "express";
-import Result from "../result";
-import ErrorCode from "../error_code";
-import logger from "../logger"
+import Result from "@utils/result";
+import ErrorCode from "@utils/error_code";
+import logger from "@utils/logger"
 
 const error_handler = (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
     logger.error(err);

@@ -1,10 +1,10 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import logger from "../logger";
-import * as config from "../config/jwt_config";
-import Result from "../result";
-import ErrorCode from "../error_code";
 import async_handler from "express-async-handler";
+import logger from "@utils/logger";
+import * as config from "@config/jwt_config";
+import Result from "@utils/result";
+import ErrorCode from "@utils/error_code";
 
 export type TokenSchema = {user_id: number, groups: Array<number>}
 

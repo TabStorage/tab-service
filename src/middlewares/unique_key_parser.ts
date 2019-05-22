@@ -1,5 +1,5 @@
 import express from "express";
-import * as special from "../utils/special";
+import * as special from "@utils/special";
 
 function unique_key_parser(req: express.Request, res: express.Response, next: express.NextFunction, unique_key: string) {
     let parse_info: special.MetaInfo = special.unpack_key(unique_key);

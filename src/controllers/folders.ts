@@ -1,9 +1,9 @@
 import express from "express";
-import Folders from "../models/folders";
-import * as datetime from "../utils/datetime";
-import * as special from "../utils/special";
-import Result from "../result";
-import ErrorCode from "../error_code";
+import Folders from "@models/folders";
+import * as datetime from "@utils/datetime";
+import * as special from "@utils/special";
+import Result from "@utils/result";
+import ErrorCode from "@utils/error_code";
 
 export async function createFolder(req: express.Request, res: express.Response) {
 
