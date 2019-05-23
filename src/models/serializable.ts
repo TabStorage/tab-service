@@ -3,5 +3,8 @@ export interface SerializeFunc<T> {
 }
 
 export interface Serializable<T> {
+    // for marshaling white list
+    white_list: Array<keyof T>
+
     toJSON: SerializeFunc<T>
 }

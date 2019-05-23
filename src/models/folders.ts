@@ -1,6 +1,6 @@
 import pool from "@utils/db_pool";
 import { EntityAttrs } from "@models/entity";
-import { DefaultQuery } from "@models/default_query";
+import { DefaultModel } from "@models/default_model";
 import * as datetime from "@utils/datetime";
 import logger from "@utils/logger";
 
@@ -26,18 +26,19 @@ export class FolderAttrs implements EntityAttrs {
     owner_id: number;
 
     is_tab: boolean = false;
-
-    white_list: Array<string> = 
-        ["id", "name", "url", "owner_id", "is_public", "is_group", "version", "modified_at"];
 }
 
-export class Folders extends DefaultQuery<FolderAttrs> {
-    constructor(attrs?: FolderAttrs) {
+export class Folders extends DefaultModel<FolderAttrs> {
+    public constructor(attrs?: FolderAttrs) {
+        let white_list = 
+            ["id", "name", "url", "owner_id", "is_public", "is_group", "version", "modified_at"];
+
         if (attrs != undefined)
-            super(attrs);
+            super(attrs, white_list);
         else
-            super(new FolderAttrs());
+            super(new FolderAttrs(), white_list);
     }
+
 
     /*
     create = async () => {

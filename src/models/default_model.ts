@@ -1,17 +1,17 @@
 import pool from "@utils/db_pool";
 import logger from "@utils/logger";
 import { Queryable } from "@models/queryable";
-import { Modelable } from "@models/modelable";
+import { Storable } from "@models/storable";
 import { Serializable } from "@models/serializable";
 
-export class DefaultQuery<T extends Modelable> implements Queryable<T>, Serializable<T> {
-    constructor(attrs: T) {
+export class DefaultModel<T extends Storable> implements Queryable<T>, Serializable<T> {
+    constructor(attrs: T, white_list: Array<string>) {
         this.attrs= attrs;
-        this.white_list = attrs.white_list as (keyof T)[];
+        this.white_list = white_list as (keyof T)[];
     }
 
     public attrs: T
-    private white_list: Array<keyof T>;
+    public white_list: Array<keyof T>;
 
     create = async (obj: T): Promise<T | Error> => { 
         if (obj === null) {
