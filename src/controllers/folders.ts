@@ -1,10 +1,8 @@
 import express from "express";
 import { Folders, FolderAttrs } from "@models/folders";
 import * as datetime from "@utils/datetime";
-import * as special from "@utils/special";
 import Result from "@utils/result";
 import ErrorCode from "@utils/error_code";
-import { DefaultQuery } from "@models/default_query";
 
 export async function createFolder(req: express.Request, res: express.Response) {
 
@@ -17,14 +15,14 @@ export async function getFolder(req: express.Request, res: express.Response) {
 
     let result: Result;
 
-    let folder = new Folders();
+    let folder = new Folders(new FolderAttrs({id: folder_id}));
     // TODO: Fix here more flexable
     folder.attrs.id = folder_id;
     const folderAttrs = await folder.get();
     if (folderAttrs instanceof Error) {
         result = new Result(ErrorCode.Inexists, 404, null);
     } else {
-        result = new Result(ErrorCode.None, 200, folderAttrs);
+        result = new Result(ErrorCode.None, 200, folder);
     }
 
     return result;

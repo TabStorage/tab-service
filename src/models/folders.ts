@@ -7,26 +7,36 @@ import logger from "@utils/logger";
 // TODO: add profer validation
 
 export class FolderAttrs implements EntityAttrs {
-    table: string = "entity"
+    public constructor(init?:Partial<FolderAttrs>) {
+        Object.assign(this, init);
+    }
 
-    id: number
-    name: string
+    table: string = "entity";
+
+    id: number;
+    name: string;
     // used for tab stroage link
-    url: string
-    parent_id: number
-    root_id: number
-    is_public: boolean
-    is_group: boolean
-    version: number
-    modified_at: string
-    owner_id: number
+    url: string;
+    parent_id: number;
+    root_id: number;
+    is_public: boolean;
+    is_group: boolean;
+    version: number;
+    modified_at: string;
+    owner_id: number;
 
     is_tab: boolean = false;
+
+    white_list: Array<string> = 
+        ["id", "name", "url", "owner_id", "is_public", "is_group", "version", "modified_at"];
 }
 
 export class Folders extends DefaultQuery<FolderAttrs> {
-    constructor() {
-        super(new FolderAttrs());
+    constructor(attrs?: FolderAttrs) {
+        if (attrs != undefined)
+            super(attrs);
+        else
+            super(new FolderAttrs());
     }
 
     /*
