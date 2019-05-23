@@ -1,15 +1,17 @@
 import pool from "@utils/db_pool";
 import logger from "@utils/logger";
 import { Queryable } from "@models/queryable";
-import { Storable } from "@models/storable";
-import { Serializable } from "./serializable";
+import { Modelable } from "@models/modelable";
+import { Serializable } from "@models/serializable";
 
-export class DefaultQuery<T extends Storable> implements Queryable<T>, Serializable<T> {
+export class DefaultQuery<T extends Modelable> implements Queryable<T>, Serializable<T> {
     constructor(attrs: T) {
         this.attrs= attrs;
+        this.white_list = attrs.white_list as (keyof T)[];
     }
 
     public attrs: T
+    private white_list: Array<keyof T>;
 
     create = async (obj: T): Promise<T | Error> => { 
         if (obj === null) {
@@ -31,7 +33,6 @@ export class DefaultQuery<T extends Storable> implements Queryable<T>, Serializa
 
     get = async (): Promise<T | Error> => { 
         let obj: T = this.attrs;
-        console.log("here");
         if (obj.id < 0) {
             return new Error("invalid id");
         }
@@ -42,13 +43,9 @@ export class DefaultQuery<T extends Storable> implements Queryable<T>, Serializa
             // TODO: Add custom validator
 
             if (results.length != 1) {
-                logger.info(`Inexists object in db. id: ${obj.id}`);
-                return new Error("Inexists object in db");
-            } 
-
-            const entity: T = results[0];
-            console.log(entity);
-            return entity;
+                logger.info(`Inexists object in db. id: ${obj.id}`); return new Error("Inexists object in db"); } 
+            this.attrs = results[0];
+            return this.attrs;
 
         } catch(err) {
             logger.error(err);
@@ -77,9 +74,7 @@ export class DefaultQuery<T extends Storable> implements Queryable<T>, Serializa
 
     toJSON = (): object => {
         let obj = this.attrs;
-        console.log(obj);
         const keys = Object.keys(obj) as (keyof T)[]
-        console.log(`key: ${keys}`);
         let pairs = keys.map(key => {
                     const pairs: [keyof T, T[keyof T]] = [key, obj[key]];
                     return pairs;
@@ -88,8 +83,12 @@ export class DefaultQuery<T extends Storable> implements Queryable<T>, Serializa
         let temp: any = {}; 
 
         return pairs.reduce((acc, [key, val]) => {
-            acc[key] = val;
-            return acc;
+            if (this.white_list.includes(key)) {
+                acc[key] = val;
+                return acc;
+            } else {
+                return acc;
+            }
         }, temp); 
     }
 }

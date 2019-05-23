@@ -1,5 +1,3 @@
-import { Storable } from "@models/storable";
-
 export interface CreateFunc<T> {
     (obj: T): Promise<T | Error>
 }
@@ -20,7 +18,7 @@ export interface DeleteFunc<T> {
     (obj: T): Promise<Error>
 }
 
-export interface Queryable<T extends Storable> {
+export interface Queryable<T> {
     create: CreateFunc<T>
     get: GetFunc<T>
     getAll: GetAllFunc<T>
