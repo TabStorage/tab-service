@@ -1,20 +1,4 @@
-interface CreateFunc {
-    (): Promise<boolean>
-}
-
-interface GetFunc {
-    (id: number): Promise<boolean>
-}
-
-interface UpdateFunc {
-    (args: object): Promise<boolean>
-}
-
-interface DeleteFunc {
-    (): Promise<boolean>
-}
-
-interface Entity {
+export interface EntityAttrs {
     id: number
     name: string
     url: string
@@ -27,11 +11,6 @@ interface Entity {
     owner_id: number
     parent_id: number
     root_id: number
-
-    create: CreateFunc
-    get: GetFunc
-    update: UpdateFunc
-    delete: DeleteFunc
 }
 
-export default Entity;
+export default EntityAttrs;

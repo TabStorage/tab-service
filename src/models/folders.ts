@@ -1,14 +1,13 @@
 import pool from "@utils/db_pool";
-import Entity from "@models/entity";
+import { EntityAttrs } from "@models/entity";
+import { DefaultQuery } from "@models/default_query";
 import * as datetime from "@utils/datetime";
 import logger from "@utils/logger";
 
 // TODO: add profer validation
 
-class Folders implements Entity {
-    constructor() {
-        this.id = 0;
-    }
+export class FolderAttrs implements EntityAttrs {
+    table: string = "entity"
 
     id: number
     name: string
@@ -23,7 +22,14 @@ class Folders implements Entity {
     owner_id: number
 
     is_tab: boolean = false;
+}
 
+export class Folders extends DefaultQuery<FolderAttrs> {
+    constructor() {
+        super(new FolderAttrs());
+    }
+
+    /*
     create = async () => {
         if (this.id <= 0) {
             logger.info('Empty id');
@@ -76,6 +82,9 @@ class Folders implements Entity {
                 logger.info(`Invalid folder ${id}`)
                 return false;
             }
+
+            let entity: Entity = result[0];
+            console.log(entity);
 
             this.name = result[0].name;
             this.url = result[0].url;
@@ -139,6 +148,7 @@ class Folders implements Entity {
             modified_at: this.modified_at
         };
     }
+    */
 }
 
 export default Folders;

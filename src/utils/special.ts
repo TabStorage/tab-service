@@ -1,4 +1,4 @@
-import Entity from "@models/entity";
+import { EntityAttrs } from "@models/entity";
 
 /*
 *   special link
@@ -14,7 +14,7 @@ export class MetaInfo {
     err: any;
 }
 
-export function pack_key(entity: Entity): string {
+export function pack_key(entity: EntityAttrs): string {
     let packed_string = `${entity.root_id}_${entity.id}_${entity.version}`;
     return Buffer.from(packed_string).toString('base64');
 }
