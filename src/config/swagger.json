@@ -115,6 +115,112 @@
           }
         ]
       }
+    },
+    "/tabs/{unique_key}": {
+      "get": {
+        "tags": ["Tab"],
+        "summary": "Get Tab info",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Tab"],
+        "summary": "Create a new tab",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "put": {
+        "tags": ["Tab"],
+        "summary": "Modify info of tab",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Tab"],
+        "summary": "Delete a tab",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      }
     }
   }
 }
