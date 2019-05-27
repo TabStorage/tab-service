@@ -1,8 +1,12 @@
 USE tab_service;
 
+SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `user_entity`;
 
 DROP TABLE IF EXISTS `group_entity`;
+
+SET foreign_key_checks = 1;
 
 CREATE TABLE user_entity (
     id INT unsigned NOT NULL AUTO_INCREMENT,
@@ -20,7 +24,7 @@ CREATE TABLE user_entity (
 
     PRIMARY KEY (id),
     FOREIGN KEY (parent_id) REFERENCES user_entity(id),
-    FOREIGN KEY (root_id) REFERENCES user_root(user_id)
+    FOREIGN KEY (root_id) REFERENCES user_root(id)
 );
 
 CREATE TABLE group_entity (
@@ -39,5 +43,5 @@ CREATE TABLE group_entity (
 
     PRIMARY KEY (id),
     FOREIGN KEY (parent_id) REFERENCES group_entity(id),
-    FOREIGN KEY (root_id) REFERENCES group_root(group_id)
+    FOREIGN KEY (root_id) REFERENCES group_root(id)
 )

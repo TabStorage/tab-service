@@ -1,19 +1,11 @@
 import express from "express";
 import async_handler from "express-async-handler";
-import { TokenSchema } from "@middlewares/token_validator";
-import Result from "@utils/result";
-import ErrorCode from "@utils/error_code";
+import { getRoot } from "@controllers/users/root";
 
 let userRootRouter = express.Router();
 
 userRootRouter.get("/", async_handler(async (req, res, next) => {
-    let result: Result;
-    let token: TokenSchema = req.context.get("token");
-    if (token === null) {
-        result = new Result(ErrorCode.InvalidToken, 401, null);
-    } else {
-    }
-
+    let result = await getRoot(req, res);
     result.send_to(res);
 }));
 
