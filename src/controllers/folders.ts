@@ -16,8 +16,6 @@ export async function getFolder(req: express.Request, res: express.Response) {
     let result: Result;
 
     let folder = new Folders(new FolderAttrs({id: folder_id}));
-    // TODO: Fix here more flexable
-    folder.attrs.id = folder_id;
     const folderAttrs = await folder.get();
     if (folderAttrs instanceof Error) {
         result = new Result(ErrorCode.Inexists, 404, null);
