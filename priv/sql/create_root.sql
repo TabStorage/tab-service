@@ -1,8 +1,17 @@
 USE tab_service;
 
-DROP TABLE IF EXISTS `root`;
+DROP TABLE IF EXISTS `user_root`;
 
-CREATE TABLE `root` {
-    id INT unsigned NOT NULL AUTO_INCREMENT,
-    is_group BOOLEAN NOT NULL,
-}
+DROP TABLE IF EXISTS `group_root`;
+
+CREATE TABLE `user_root` (
+    user_id INT unsigned NOT NULL,
+    
+    PRIMARY KEY (user_id)
+);
+
+CREATE TABLE `group_root` (
+    group_id INT unsigned NOT NULL,
+
+    PRIMARY KEY (group_id)
+);
