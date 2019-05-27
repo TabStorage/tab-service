@@ -14,12 +14,9 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
     public white_list: Array<keyof T>;
 
     create = async (obj: T): Promise<T | Error> => { 
-        if (obj === null) {
-            return new Error("obj is null");
-        }
-
-        if (obj.table === "") {
-            return new Error("Empty name of table");
+        const err = this.validate_table(obj);
+        if (err != null) {
+            return err;
         }
 
         try {
@@ -72,6 +69,24 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
         return Promise.resolve(null); 
     }
 
+    query = async (query: string): Promise<Array<T> | Error> => {
+        if (query === "") {
+            return new Error("Empty SQL");
+        }
+
+        try {
+            const [results, fields] = await pool.query(query);
+
+            let queryResults: Array<T> = new Array<T>();
+            results.forEach((result: T) => {
+                queryResults.push(result);
+            });
+            return queryResults;
+        } catch (err) {
+            return err;
+        }
+    };
+
     toJSON = (): object => {
         let obj = this.attrs;
         const keys = Object.keys(obj) as (keyof T)[]
@@ -90,5 +105,17 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
                 return acc;
             }
         }, temp); 
+    }
+
+    protected validate_table(obj: T): Error {
+        if (obj === null) {
+            return new Error("obj is null");
+        }
+
+        if (obj.table === "") {
+            return new Error("Empty name of table");
+        }
+
+        return null;
     }
 }
