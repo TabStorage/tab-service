@@ -4,9 +4,9 @@ import { TokenSchema } from "@middlewares/token_validator";
 import Result from "@utils/result";
 import ErrorCode from "@utils/error_code";
 
-let root_router = express.Router();
+let userRootRouter = express.Router();
 
-root_router.get("/", async_handler(async (req, res, next) => {
+userRootRouter.get("/", async_handler(async (req, res, next) => {
     let result: Result;
     let token: TokenSchema = req.context.get("token");
     if (token === null) {
@@ -17,4 +17,4 @@ root_router.get("/", async_handler(async (req, res, next) => {
     result.send_to(res);
 }));
 
-export default root_router;
+export default userRootRouter;

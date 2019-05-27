@@ -9,9 +9,15 @@ import request_context from "@middlewares/request_context";
 import error_handler from "@middlewares/error_handler";
 import token_validator from "@middlewares/token_validator";
 
-import tabRouter from "@routes/tabs";
-import folderRouter from "@routes/folders";
 import docsRouter from "@routes/api_docs";
+
+import userRootRouter from "@routes/users/root";
+import userTabRouter from "@routes/users/tabs";
+import userFolderRouter from "@routes/users/folders";
+
+import groupRootRouter from "@routes/groups/root";
+import groupTabRouter from "@routes/groups/tabs";
+import groupFolderRouter from "@routes/groups/folders";
 
 const port = process.env.port || 80;
 const app = express();
@@ -25,8 +31,15 @@ app.use(express.json());
 app.use(request_context);
 app.use(token_validator);
 
-app.use("/api", tabRouter);
-app.use("/api/folders", folderRouter);
+// User
+app.use("/api/user/root", userRootRouter);
+app.use("/api/user/tabs", userTabRouter);
+app.use("/api/user/folders", userFolderRouter);
+
+// Group
+app.use("/api/group/root", groupRootRouter);
+app.use("/api/group/tabs", groupTabRouter);
+app.use("/api/group/folders", groupFolderRouter);
 
 if (app.get('env') === "development") {
     app.use("/", docsRouter);

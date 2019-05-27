@@ -5,7 +5,6 @@ export interface EntityAttrs {
     thumbnail_url? : string
     is_tab?: boolean
     is_public: boolean
-    is_group: boolean
     version: number
     modified_at: string
     owner_id: number

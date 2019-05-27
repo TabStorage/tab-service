@@ -1,5 +1,5 @@
 import express from "express";
-import { Folders, FolderAttrs } from "@models/folders";
+import { UserFolders, UserFolderAttrs } from "@models/users/folders";
 import * as datetime from "@utils/datetime";
 import Result from "@utils/result";
 import ErrorCode from "@utils/error_code";
@@ -15,7 +15,7 @@ export async function getFolder(req: express.Request, res: express.Response) {
 
     let result: Result;
 
-    let folder = new Folders(new FolderAttrs({id: folder_id}));
+    let folder = new UserFolders(new UserFolderAttrs({id: folder_id}));
     const folderAttrs = await folder.get();
     if (folderAttrs instanceof Error) {
         result = new Result(ErrorCode.Inexists, 404, null);
@@ -30,7 +30,7 @@ export async function setFolder(req: express.Request, res: express.Response) {
     const folder_id: number = req.params.unique_key;
     const cur_time: string = datetime.ISODateString(new Date());
 
-    const folder = new Folders();
+    const folder = new UserFolders();
     folder.attrs.id = folder_id;
 
     let update_args = {modified_at: cur_time};

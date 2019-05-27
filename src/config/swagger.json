@@ -10,9 +10,9 @@
   "schemes": ["http", "https"],
   "produces": ["application/json"],
   "paths": {
-    "/folders/{unique_key}": {
+    "/user/folders/{unique_key}": {
       "get": {
-        "tags": ["Folder"],
+        "tags": ["User Folder"],
         "summary": "Get folder info",
         "responses": {
           "200": {
@@ -38,7 +38,7 @@
         ]
       },
       "post": {
-        "tags": ["Folder"],
+        "tags": ["User Folder"],
         "summary": "Create a new folder",
         "responses": {
           "200": {
@@ -64,7 +64,7 @@
         ]
       },
       "put": {
-        "tags": ["Folder"],
+        "tags": ["User Folder"],
         "summary": "Modify info of folder",
         "responses": {
           "200": {
@@ -90,7 +90,7 @@
         ]
       },
       "delete": {
-        "tags": ["Folder"],
+        "tags": ["User Folder"],
         "summary": "Delete a folder",
         "responses": {
           "200": {
@@ -116,9 +116,9 @@
         ]
       }
     },
-    "/tabs/{unique_key}": {
+    "/user/tabs/{unique_key}": {
       "get": {
-        "tags": ["Tab"],
+        "tags": ["User Tab"],
         "summary": "Get Tab info",
         "responses": {
           "200": {
@@ -144,7 +144,7 @@
         ]
       },
       "post": {
-        "tags": ["Tab"],
+        "tags": ["User Tab"],
         "summary": "Create a new tab",
         "responses": {
           "200": {
@@ -170,7 +170,7 @@
         ]
       },
       "put": {
-        "tags": ["Tab"],
+        "tags": ["User Tab"],
         "summary": "Modify info of tab",
         "responses": {
           "200": {
@@ -196,7 +196,219 @@
         ]
       },
       "delete": {
-        "tags": ["Tab"],
+        "tags": ["User Tab"],
+        "summary": "Delete a tab",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/group/folders/{unique_key}": {
+      "get": {
+        "tags": ["Group Folder"],
+        "summary": "Get folder info",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Group Folder"],
+        "summary": "Create a new folder",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "put": {
+        "tags": ["Group Folder"],
+        "summary": "Modify info of folder",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Group Folder"],
+        "summary": "Delete a folder",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/group/tabs/{unique_key}": {
+      "get": {
+        "tags": ["Group Tab"],
+        "summary": "Get Tab info",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Group Tab"],
+        "summary": "Create a new tab",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "put": {
+        "tags": ["Group Tab"],
+        "summary": "Modify info of tab",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Group Tab"],
         "summary": "Delete a tab",
         "responses": {
           "200": {
