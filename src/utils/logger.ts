@@ -2,9 +2,16 @@ import winston from "winston";
 import winstonDaily from "winston-daily-rotate-file";
 import moment from "moment";
 
-function time_stamp_format() {
+function time_format() {
     return moment().format('YYYY-MM-DD HH:mm:ss.SSS ZZ');
 }
+
+const myFormat = winston.format.printf((info) => {
+  if (info && info instanceof Error) {
+    return `${info.timestamp} ${info.level} ${info.message} : ${info.stack}`;
+  }
+  return `${info.timestamp} ${info.level}: ${info.message}`;
+});
 
 const logger = winston.createLogger({
     transports: [
@@ -19,7 +26,7 @@ const logger = winston.createLogger({
                 level: 'info',
                 showLevel: true,
                 json: false,
-                timestamp: time_stamp_format
+                timestamp: time_format
             }
         }),
         new (winston.transports.Console)({
@@ -38,13 +45,19 @@ const logger = winston.createLogger({
                 level: 'error',
                 showLevel: true,
                 json: false,
-                timestamp: time_stamp_format
+                timestamp: time_format
             }
         }),
         new (winston.transports.Console)({
             level: 'debug'
         })
-    ]
+    ],
+    format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.timestamp(),
+        winston.format.splat(),
+        myFormat
+    )
 });
 
 export default logger;
