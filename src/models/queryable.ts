@@ -18,8 +18,8 @@ export interface DeleteFunc<T> {
     (obj: T): Promise<Error>
 }
 
-export interface RawQueryFunc<T> {
-    (query: string): Promise<Array<T> | Error>
+export interface RawQueryFunc {
+    (query: string): Promise<Array<object> | Error>
 }
 
 export interface Queryable<T> {
@@ -28,5 +28,5 @@ export interface Queryable<T> {
     getAll: GetAllFunc<T>
     update: UpdateFunc<T>
     delete: DeleteFunc<T>
-    query: RawQueryFunc<T>
+    query: RawQueryFunc
 }

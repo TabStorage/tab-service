@@ -69,7 +69,7 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
         return Promise.resolve(null); 
     }
 
-    query = async (query: string): Promise<Array<T> | Error> => {
+    query = async (query: string): Promise<Array<object> | Error> => {
         if (query === "") {
             return new Error("Empty SQL");
         }
@@ -77,7 +77,7 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
         try {
             const [results, fields] = await pool.query(query);
 
-            let queryResults: Array<T> = new Array<T>();
+            let queryResults: Array<object> = new Array<object>();
             results.forEach((result: T) => {
                 queryResults.push(result);
             });
