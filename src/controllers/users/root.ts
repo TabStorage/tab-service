@@ -2,7 +2,8 @@ import express from "express";
 import { TokenSchema } from "@middlewares/token_validator";
 import Result from "@utils/result";
 import ErrorCode from "@utils/error_code";
-import { Roots } from "@models/users/roots"
+import { Roots, UserRootAttrs } from "@models/users/roots"
+import { UserFolders, UserFolderAttrs } from "@models/users/folders";
 
 export async function getRoot(req: express.Request, res: express.Response) {
     let result: Result;
@@ -18,7 +19,16 @@ export async function getRoot(req: express.Request, res: express.Response) {
         if (queryResults instanceof Error) {
             result = new Result(ErrorCode.Inexists, 404, null);
         } else {
-            result = new Result(ErrorCode.None, 200, queryResults);
+            let temp = queryResults
+                .map(result => {
+                    return new UserFolders(new UserFolderAttrs(result));
+                })
+                .reduce((acc, folder) => 
+                {
+                    acc.push(folder);
+                    return acc;
+                }, []);
+            result = new Result(ErrorCode.None, 200, temp);
         }
     }
 
