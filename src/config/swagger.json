@@ -10,6 +10,34 @@
   "schemes": ["http", "https"],
   "produces": ["application/json"],
   "paths": {
+    "/user": {
+      "get": {
+        "tags": ["User Folder"],
+        "summary": "Get folder info",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "unique_key",
+            "in": "path",
+            "description": "Identifier of entity",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+          }
+        ]
+      }
+    },
     "/user/folders/{unique_key}": {
       "get": {
         "tags": ["User Folder"],

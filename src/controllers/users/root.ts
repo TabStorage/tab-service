@@ -5,7 +5,7 @@ import ErrorCode from "@utils/error_code";
 import { Roots, UserRootAttrs } from "@models/users/roots"
 import { UserFolders, UserFolderAttrs } from "@models/users/folders";
 
-export async function getRoot(req: express.Request, res: express.Response) {
+export async function getRoot(req: express.Request): Promise<Result> {
     let result: Result;
     let token: TokenSchema = req.context.get("token");
     if (token === null) {
@@ -33,4 +33,56 @@ export async function getRoot(req: express.Request, res: express.Response) {
     }
 
     return result;
+}
+
+export async function createRoot(req: express.Request): Promise<Result> {
+    let result: Result;
+    let token: TokenSchema = req.context.get("token");
+    if (token === null) {
+        result = new Result(ErrorCode.InvalidToken, 401, null);
+    } else {
+        if (token.role != "admin") {
+            result = new Result(ErrorCode.InvalidToken, 401, null);
+        } else {
+            const user_id: number = parseInt(req.body.user_id);
+            let root = new Roots(new UserRootAttrs({user_id: user_id}));
+            let queryResult = await root.create();
+
+            if (queryResult instanceof Error) {
+                result = new Result(ErrorCode.Internal, 500, null);
+            } else {
+                result = new Result(ErrorCode.None, 200, null);
+            }
+        }
+    }
+
+    return result;
+}
+
+export async function deleteRoot(req: express.Request): Promise<Result> {
+    let result: Result;
+    let token: TokenSchema = req.context.get("token");
+    if (token === null) {
+        result = new Result(ErrorCode.InvalidToken, 401, null);
+    } else {
+        if (token.role != "admin") {
+            result = new Result(ErrorCode.InvalidToken, 401, null);
+        } else {
+            const user_id: number = parseInt(req.body.user_id);
+            let root = new Roots()
+            let queryResult = await root.delete({user_id: user_id});
+            
+            if (queryResult == null) {
+                result = new Result(ErrorCode.None, 200, null);
+            } else {
+                result = new Result(ErrorCode.Internal, 500, null);
+            }
+        }
+    }
+
+    return result;
+}
+
+export async function setRoot(req: express.Request): Promise<Result> {
+    return null;
 }

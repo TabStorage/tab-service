@@ -6,7 +6,7 @@ import * as config from "@config/jwt_config";
 import Result from "@utils/result";
 import ErrorCode from "@utils/error_code";
 
-export type TokenSchema = {user_id: number, groups: Array<number>}
+export type TokenSchema = {user_id: number, groups: Array<number>, role: string}
 
 function asyncVerify(token: string): Promise<TokenSchema> {
     return new Promise<TokenSchema>((resolve, reject) => {

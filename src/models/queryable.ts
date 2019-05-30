@@ -1,5 +1,5 @@
 export interface CreateFunc<T> {
-    (obj: T): Promise<T | Error>
+    (): Promise<T | Error>
 }
 
 export interface GetFunc<T> {
@@ -14,8 +14,8 @@ export interface UpdateFunc<T> {
     (obj: T, args: object): Promise<T | Error>
 }
 
-export interface DeleteFunc<T> {
-    (obj: T): Promise<Error>
+export interface DeleteFunc {
+    (key: Object): Promise<Error>
 }
 
 export interface RawQueryFunc {
@@ -27,6 +27,6 @@ export interface Queryable<T> {
     get: GetFunc<T>
     getAll: GetAllFunc<T>
     update: UpdateFunc<T>
-    delete: DeleteFunc<T>
+    delete: DeleteFunc
     query: RawQueryFunc
 }

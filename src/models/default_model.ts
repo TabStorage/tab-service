@@ -13,7 +13,8 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
     public attrs: T
     public white_list: Array<keyof T>;
 
-    create = async (obj: T): Promise<T | Error> => { 
+    create = async (): Promise<T | Error> => { 
+        let obj: T = this.attrs;
         const err = this.validate_table(obj);
         if (err != null) {
             return err;
@@ -64,9 +65,22 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
         }
     }
 
-    delete = async (obj: T): Promise<Error> => { 
-        //TODO: implements
-        return Promise.resolve(null); 
+    delete = async (key: Object): Promise<Error> => { 
+        if (key == null) {
+            return new Error("key objec is null");
+        }
+
+        if (Object.keys(key).length != 1) {
+            return new Error("number of keys the object has exceeds one");
+        }
+
+        try {
+            const [results, _] = await pool.query(`DELETE FROM ${this.attrs.table} WHERE ?`, key);
+
+            return null;
+        } catch(err) {
+            return err;
+        }
     }
 
     query = async (query: string): Promise<Array<object> | Error> => {
