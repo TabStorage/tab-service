@@ -5,8 +5,6 @@ export class GroupRootAttrs {
         Object.assign(this, init);
     }
 
-    table: string = "user_root";
-
     id: number;
     user_id: number;
 }
@@ -15,8 +13,8 @@ export class Roots extends DefaultModel<GroupRootAttrs> {
     public constructor(attrs?: GroupRootAttrs) {
         let white_list = ["id"];
         if (attrs != undefined)
-            super(attrs, white_list);
+            super(attrs, "group_root", white_list);
         else
-            super(new GroupRootAttrs(), white_list);
+            super(new GroupRootAttrs(), "group_root", white_list);
     }
 }

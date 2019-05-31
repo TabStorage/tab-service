@@ -5,7 +5,7 @@ import logger from "@utils/logger"
 
 const error_handler = (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
     logger.error(err);
-    let result = new Result(ErrorCode.Internal, 500, null);
+    let result = new Result(ErrorCode.Internal, null);
     result.send_to(res);
 }
 

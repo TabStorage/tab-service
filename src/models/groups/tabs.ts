@@ -8,8 +8,6 @@ export class GroupTabAttrs implements EntityAttrs {
         Object.assign(this, init);
     }
 
-    table: string = "user_entity";
-
     id: number;
     name: string;
     url: string;
@@ -29,8 +27,8 @@ export class UserTabs extends DefaultModel<GroupTabAttrs> {
             ["id", "name", "url", "owner_id", "is_public", "version", "modified_at"];
 
         if (attrs != undefined)
-            super(attrs, white_list);
+            super(attrs, "group_entity", white_list);
         else
-            super(new GroupTabAttrs(), white_list);
+            super(new GroupTabAttrs(), "group_entity", white_list);
     }
 }

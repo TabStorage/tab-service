@@ -7,9 +7,11 @@ interface ResponsableObject {
 }
 
 class Result {
-    constructor(error_code: ErrorCode, status_code: number, data: any) { 
+    constructor(error_code: ErrorCode, data: any) { 
         this.error_code = error_code;
-        this.status_code = status_code;
+        this.status_code = ErrorCode.toStatusCode(error_code);
+        console.log(this.error_code)
+        console.log(this.status_code);
         this.data = data;
     }
 

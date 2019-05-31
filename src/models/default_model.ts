@@ -3,92 +3,100 @@ import logger from "@utils/logger";
 import { Queryable } from "@models/queryable";
 import { Storable } from "@models/storable";
 import { Serializable } from "@models/serializable";
+import ErrorCode from "@utils/error_code";
 
-export class DefaultModel<T extends Storable> implements Queryable<T>, Serializable<T> {
-    constructor(attrs: T, white_list: Array<string>) {
-        this.attrs= attrs;
+export class DefaultModel<T extends Object> implements Queryable<T>, Serializable<T>, Storable {
+    constructor(attrs: T, table: string, white_list: Array<string>) {
+        this.attrs = attrs;
+        this.table= table;
         this.white_list = white_list as (keyof T)[];
     }
 
-    public attrs: T
+    public table: string;
+    public attrs: T;
     public white_list: Array<keyof T>;
 
-    create = async (): Promise<T | Error> => { 
+    create = async (): Promise<T | ErrorCode> => { 
         let obj: T = this.attrs;
         const err = this.validate_table(obj);
-        if (err != null) {
+        if (err != ErrorCode.None) {
             return err;
         }
 
         try {
-            let sql: string = `INSERT INTO ${obj.table} entity SET ?`;
+            let sql: string = `INSERT INTO ${this.table} SET ?`;
             const [result] = await pool.query(sql, obj);
             return obj;
         } catch(err) {
             logger.error(err);
-            return err;
+            return ErrorCode.Internal;
         }
     }
 
-    get = async (): Promise<T | Error> => { 
-        let obj: T = this.attrs;
-        if (obj.id < 0) {
-            return new Error("invalid id");
+    get = async (id: number): Promise<T | ErrorCode> => { 
+        if (id < 0) {
+            logger.error("")
+            return ErrorCode.Invalid;
         }
 
         try {
-            const [results, fields] = await pool.query(`SELECT * FROM ${obj.table} WHERE \`id\` = ?`, [obj.id]);
-
-            // TODO: Add custom validator
+            const [results, fields] = 
+                await pool.query(`SELECT * FROM ${this.table} WHERE \`id\` = ?`, [id]);
 
             if (results.length != 1) {
-                logger.info(`Inexists object in db. id: ${obj.id}`); return new Error("Inexists object in db"); } 
-            this.attrs = results[0];
+                logger.info(`Inexists object in db. id: ${id}`); 
+                return ErrorCode.Inexists; 
+            } 
+
+            this.attrs = results[0] as T;
             return this.attrs;
 
         } catch(err) {
             logger.error(err);
-            return err;
+            return ErrorCode.Internal;
         }
     }
 
-    getAll = async (obj_list: Array<T>): Promise<Array<T> | Error> => { 
+    getAll = async (obj_list: Array<T>): Promise<Array<T> | ErrorCode> => { 
         //TODO: implments
         return Promise.resolve(null); 
     }
 
-    update = async (obj: T, args: object): Promise<T | Error> => {
+    update = async (obj: T, args: object): Promise<T | ErrorCode> => {
         //TODO: implements
         try {
             return obj;
         } catch(err) {
             logger.error(err);
-            return err;
+            return ErrorCode.Internal;
         }
     }
 
-    delete = async (key: Object): Promise<Error> => { 
+    delete = async (key: Object): Promise<ErrorCode> => { 
         if (key == null) {
-            return new Error("key objec is null");
+            logger.error("key object is null");
+            return ErrorCode.Invalid;
         }
 
         if (Object.keys(key).length != 1) {
-            return new Error("number of keys the object has exceeds one");
+            logger.error("number of keys the object has exceeds one");
+            return ErrorCode.Invalid;
         }
 
         try {
-            const [results, _] = await pool.query(`DELETE FROM ${this.attrs.table} WHERE ?`, key);
+            const [results, _] = await pool.query(`DELETE FROM ${this.table} WHERE ?`, key);
 
-            return null;
+            return ErrorCode.None;
         } catch(err) {
             logger.error(err);
-            return err;
+            return ErrorCode.Internal;
         }
     }
 
-    query = async (query: string): Promise<Array<object> | Error> => {
+    query = async (query: string): Promise<Array<object> | ErrorCode> => {
         if (query === "") {
-            return new Error("Empty SQL");
+            logger.error("Empty SQL");
+            return ErrorCode.Internal;
         }
 
         try {
@@ -101,7 +109,7 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
             return queryResults;
         } catch (err) {
             logger.error(err);
-            return err;
+            return ErrorCode.Internal;
         }
     };
 
@@ -125,15 +133,17 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
         }, temp); 
     }
 
-    protected validate_table(obj: T): Error {
+    protected validate_table(obj: T): ErrorCode {
         if (obj === null) {
-            return new Error("obj is null");
+            logger.error("obj is null");
+            return ErrorCode.Internal;
         }
 
-        if (obj.table === "") {
-            return new Error("Empty name of table");
+        if (this.table === "") {
+            logger.error("Empty name of table");
+            return ErrorCode.Empty;
         }
 
-        return null;
+        return ErrorCode.None;
     }
 }

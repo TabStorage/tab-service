@@ -8,8 +8,6 @@ export class GroupFolderAttrs implements EntityAttrs {
         Object.assign(this, init);
     }
 
-    table: string = "group_entity";
-
     id: number;
     name: string;
     // used for tab stroage link
@@ -30,8 +28,8 @@ export class GroupFolders extends DefaultModel<GroupFolderAttrs> {
             ["id", "name", "url", "owner_id", "is_public", "version", "modified_at"];
 
         if (attrs != undefined)
-            super(attrs, white_list);
+            super(attrs, "group_entity", white_list);
         else
-            super(new GroupFolderAttrs(), white_list);
+            super(new GroupFolderAttrs(), "group_entity", white_list);
     }
 }

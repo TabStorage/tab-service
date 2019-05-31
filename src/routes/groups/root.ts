@@ -10,7 +10,7 @@ groupRootRouter.get("/", async_handler(async (req, res, next) => {
     let result: Result;
     let token: TokenSchema = req.context.get("token");
     if (token === null) {
-        result = new Result(ErrorCode.InvalidToken, 401, null);
+        result = new Result(ErrorCode.InvalidToken, null);
     } else {
     }
 

@@ -29,8 +29,8 @@ export class UserTabs extends DefaultModel<UserTabAttrs> {
             ["id", "name", "url", "owner_id", "is_public", "version", "modified_at"];
 
         if (attrs != undefined)
-            super(attrs, white_list);
+            super(attrs, "user_entity", white_list);
         else
-            super(new UserTabAttrs(), white_list);
+            super(new UserTabAttrs(), "user_entity", white_list);
     }
 }

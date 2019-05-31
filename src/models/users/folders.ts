@@ -8,8 +8,6 @@ export class UserFolderAttrs implements EntityAttrs {
         Object.assign(this, init);
     }
 
-    table: string = "user_entity";
-
     id: number;
     name: string;
     // used for tab stroage link
@@ -30,8 +28,8 @@ export class UserFolders extends DefaultModel<UserFolderAttrs> {
             ["id", "name", "url", "owner_id", "is_public", "version", "modified_at"];
 
         if (attrs != undefined)
-            super(attrs, white_list);
+            super(attrs, "user_entity", white_list);
         else
-            super(new UserFolderAttrs(), white_list);
+            super(new UserFolderAttrs(), "user_entity", white_list);
     }
 }

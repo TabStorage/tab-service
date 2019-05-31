@@ -15,12 +15,12 @@ export async function getFolder(req: express.Request, res: express.Response) {
 
     let result: Result;
 
-    let folder = new GroupFolders(new GroupFolderAttrs({id: folder_id}));
-    const folderAttrs = await folder.get();
-    if (folderAttrs instanceof Error) {
-        result = new Result(ErrorCode.Inexists, 404, null);
+    let folder = new GroupFolders();
+    const queryResult = await folder.get(folder_id);
+    if (queryResult instanceof GroupFolderAttrs) {
+        result = new Result(ErrorCode.None, folder);
     } else {
-        result = new Result(ErrorCode.None, 200, folder);
+        result = new Result(queryResult, null);
     }
 
     return result;

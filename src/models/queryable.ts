@@ -1,25 +1,27 @@
+import ErrorCode from "@utils/error_code";
+
 export interface CreateFunc<T> {
-    (): Promise<T | Error>
+    (): Promise<T | ErrorCode>
 }
 
 export interface GetFunc<T> {
-    (): Promise<T | Error>
+    (id: number): Promise<T | ErrorCode>
 }
 
 export interface GetAllFunc<T> {
-    (obj_list: Array<T>): Promise<Array<T> | Error>
+    (obj_list: Array<T>): Promise<Array<T> | ErrorCode>
 }
 
 export interface UpdateFunc<T> {
-    (obj: T, args: object): Promise<T | Error>
+    (obj: T, args: object): Promise<T | ErrorCode>
 }
 
 export interface DeleteFunc {
-    (key: Object): Promise<Error>
+    (key: Object): Promise<ErrorCode>
 }
 
 export interface RawQueryFunc {
-    (query: string): Promise<Array<object> | Error>
+    (query: string): Promise<Array<object> | ErrorCode>
 }
 
 export interface Queryable<T> {

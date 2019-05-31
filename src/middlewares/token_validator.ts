@@ -29,7 +29,7 @@ const token_validator = async_handler(async (req: express.Request, res: express.
             req.context.set("token", decoded);
         } catch(err) {
             logger.info(err);
-            return new Result(ErrorCode.InvalidToken, 401, null);
+            return new Result(ErrorCode.InvalidToken, null);
         }
     }
 
