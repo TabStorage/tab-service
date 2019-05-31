@@ -25,6 +25,7 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
             const [result] = await pool.query(sql, obj);
             return obj;
         } catch(err) {
+            logger.error(err);
             return err;
         }
     }
@@ -60,8 +61,9 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
         //TODO: implements
         try {
             return obj;
-        } catch(error) {
-            return error;
+        } catch(err) {
+            logger.error(err);
+            return err;
         }
     }
 
@@ -79,6 +81,7 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
 
             return null;
         } catch(err) {
+            logger.error(err);
             return err;
         }
     }
@@ -97,6 +100,7 @@ export class DefaultModel<T extends Storable> implements Queryable<T>, Serializa
             });
             return queryResults;
         } catch (err) {
+            logger.error(err);
             return err;
         }
     };
