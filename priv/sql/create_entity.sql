@@ -23,8 +23,8 @@ CREATE TABLE user_entity (
     deleted_at DATETIME NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (parent_id) REFERENCES user_entity(id),
-    FOREIGN KEY (root_id) REFERENCES user_root(id)
+    FOREIGN KEY (parent_id) REFERENCES user_entity(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (root_id) REFERENCES user_root(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE group_entity (
@@ -42,6 +42,6 @@ CREATE TABLE group_entity (
     deleted_at DATETIME NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (parent_id) REFERENCES group_entity(id),
-    FOREIGN KEY (root_id) REFERENCES group_root(id)
+    FOREIGN KEY (parent_id) REFERENCES group_entity(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (root_id) REFERENCES group_root(id) ON UPDATE CASCADE ON DELETE CASCADE
 )
