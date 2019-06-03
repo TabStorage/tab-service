@@ -13,7 +13,7 @@ export interface GetAllFunc<T> {
 }
 
 export interface UpdateFunc<T> {
-    (obj: T, args: object): Promise<T | ErrorResult>
+    (target_id: number, args: object): Promise<ErrorResult>
 }
 
 export interface DeleteFunc {

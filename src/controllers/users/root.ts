@@ -48,6 +48,7 @@ export async function createRoot(req: express.Request): Promise<Result> {
         if (token.role != "admin") {
             result = new Result(ErrorCode.InvalidToken, null);
         } else {
+            console.log(req.body);
             const user_id: number = parseInt(req.body.user_id);
             let root = new Roots(new UserRootAttrs({user_id: user_id}));
             let queryResult = await root.create();
@@ -88,5 +89,17 @@ export async function deleteRoot(req: express.Request): Promise<Result> {
 }
 
 export async function setRoot(req: express.Request): Promise<Result> {
-    return null;
+    let result: Result;
+    let token: TokenSchema = req.context.get("token");
+
+    if (token == null) {
+        result = new Result(ErrorCode.InvalidToken, null);
+    } else {
+        if (token.role != "admin") {
+            result = new Result(ErrorCode.InvalidToken, null);
+        } else {
+        }
+    }
+
+    return result;
 }

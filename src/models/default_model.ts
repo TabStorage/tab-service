@@ -3,11 +3,12 @@ import logger from "@utils/logger";
 import { Queryable } from "@models/queryable";
 import { Storable } from "@models/storable";
 import { Serializable } from "@models/serializable";
+import { SequentiableObject } from "@models/sequentiable";
 import ErrorCode from "@utils/error_code";
 import { ErrorResult } from "@utils/error_result"
 import DBErrCode from "@utils/db_err_code";
 
-export class DefaultModel<T extends Object> implements Queryable<T>, Serializable<T>, Storable {
+export class DefaultModel<T extends SequentiableObject> implements Queryable<T>, Serializable<T>, Storable {
     constructor(attrs: T, table: string, white_list: Array<string>) {
         this.attrs = attrs;
         this.table= table;
@@ -30,14 +31,13 @@ export class DefaultModel<T extends Object> implements Queryable<T>, Serializabl
             const [result] = await pool.query(sql, obj);
             return obj;
         } catch(err) {
-            logger.error(err);
-            return DBErrCode.toErrorResult(err.errno);
+            return DBErrCode.toErrorResult(err);
         }
     }
 
     get = async (id: number): Promise<T | ErrorResult> => { 
         if (id < 0) {
-            logger.error("")
+            logger.error("ID must be greater than 0");
             return new ErrorResult(ErrorCode.Invalid);
         }
 
@@ -54,8 +54,7 @@ export class DefaultModel<T extends Object> implements Queryable<T>, Serializabl
             return this.attrs;
 
         } catch(err) {
-            logger.error(err);
-            return DBErrCode.toErrorResult(err.errno);
+            return DBErrCode.toErrorResult(err);
         }
     }
 
@@ -64,13 +63,23 @@ export class DefaultModel<T extends Object> implements Queryable<T>, Serializabl
         return Promise.resolve(null); 
     }
 
-    update = async (obj: T, args: object): Promise<T | ErrorResult> => {
-        //TODO: implements
+    update = async (target_id: number, args: object): Promise<ErrorResult> => {
+        if (target_id < 0) {
+            logger.error("ID must be greater than 0");
+            return new ErrorResult(ErrorCode.Invalid);
+        }
+
         try {
-            return obj;
+            const sql: string = `UPDATE ${this.table} SET ? WHERE id = ?`;
+            const [results, _] = await pool.query(sql, [args, target_id]);
+
+            if (results.affectedRows == 1) {
+                return new ErrorResult(ErrorCode.None);
+            } else {
+                return new ErrorResult(ErrorCode.Internal);
+            }
         } catch(err) {
-            logger.error(err);
-            return DBErrCode.toErrorResult(err.errno);
+            return DBErrCode.toErrorResult(err);
         }
     }
 
@@ -90,8 +99,7 @@ export class DefaultModel<T extends Object> implements Queryable<T>, Serializabl
 
             return new ErrorResult(ErrorCode.None);
         } catch(err) {
-            logger.error(err);
-            return DBErrCode.toErrorResult(err.errno);
+            return DBErrCode.toErrorResult(err);
         }
     }
 
@@ -110,8 +118,7 @@ export class DefaultModel<T extends Object> implements Queryable<T>, Serializabl
             });
             return queryResults;
         } catch (err) {
-            logger.error(err);
-            return DBErrCode.toErrorResult(err.errno);
+            return DBErrCode.toErrorResult(err);
         }
     };
 

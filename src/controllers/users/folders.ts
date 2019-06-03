@@ -1,5 +1,5 @@
 import express from "express";
-import { UserFolders, UserFolderAttrs } from "@models/users/folders";
+import { UserFolders } from "@models/users/folders";
 import * as datetime from "@utils/datetime";
 import Result from "@utils/result";
 import ErrorCode from "@utils/error_code";
@@ -18,8 +18,6 @@ export async function getFolder(req: express.Request): Promise<Result> {
 
     let folder = new UserFolders();
     const queryResult = await folder.get(folder_id);
-    console.log(queryResult);
-    console.log(queryResult instanceof UserFolderAttrs);
     if (queryResult instanceof ErrorResult) {
         result = new Result(queryResult.errCode, null);
     } else {
@@ -30,24 +28,28 @@ export async function getFolder(req: express.Request): Promise<Result> {
 }
 
 export async function setFolder(req: express.Request): Promise<Result> {
-    const folder_id: number = req.params.unique_key;
+    const root_id: number = req.context.get("root_id");
+    const folder_id: number = req.context.get("target_id");
+    const version: number = req.context.get("version");
+
+    let result: Result;
+
     const cur_time: string = datetime.ISODateString(new Date());
 
     const folder = new UserFolders();
-    folder.attrs.id = folder_id;
 
-    let update_args = {modified_at: cur_time};
+    let update_args = req.body;
+    update_args.modified_at = cur_time;
 
-    folder.update(folder.attrs, update_args).then(isSuccess => {
-        if (!isSuccess) {
-            //res.send("error!");
-            return;
-        }
+    let queryResult = await folder.update(folder_id, update_args);
 
-        //res.send(folder);
-    });
+    if (queryResult instanceof ErrorResult) {
+        result = new Result(queryResult.errCode, null);
+    } else {
+        result = new Result(ErrorCode.None, null);
+    }
 
-    return Promise.resolve(null);
+    return result;
 }
 
 export async function deleteFolder(req: express.Request): Promise<Result> {

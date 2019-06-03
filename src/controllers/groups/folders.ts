@@ -28,22 +28,23 @@ export async function getFolder(req: express.Request, res: express.Response) {
 }
 
 export async function setFolder(req: express.Request, res: express.Response) {
+    let result: Result;
+
     const folder_id: number = req.params.unique_key;
     const cur_time: string = datetime.ISODateString(new Date());
 
     const folder = new GroupFolders();
-    folder.attrs.id = folder_id;
-
     let update_args = {modified_at: cur_time};
 
-    folder.update(folder.attrs, update_args).then(isSuccess => {
-        if (!isSuccess) {
-            res.send("error!");
-            return;
-        }
+    let queryResult = await folder.update(folder_id, update_args);
 
-        res.send(folder);
-    });
+    if (queryResult instanceof ErrorResult) {
+        result = new Result(queryResult.errCode, null);
+    } else {
+        result = new Result(ErrorCode.None, null);
+    }
+
+    return result;
 }
 
 export async function deleteFolder(req: express.Request, res: express.Response) {
