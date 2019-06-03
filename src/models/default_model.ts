@@ -4,6 +4,8 @@ import { Queryable } from "@models/queryable";
 import { Storable } from "@models/storable";
 import { Serializable } from "@models/serializable";
 import ErrorCode from "@utils/error_code";
+import { ErrorResult } from "@utils/error_result"
+import DBErrCode from "@utils/db_err_code";
 
 export class DefaultModel<T extends Object> implements Queryable<T>, Serializable<T>, Storable {
     constructor(attrs: T, table: string, white_list: Array<string>) {
@@ -16,11 +18,11 @@ export class DefaultModel<T extends Object> implements Queryable<T>, Serializabl
     public attrs: T;
     public white_list: Array<keyof T>;
 
-    create = async (): Promise<T | ErrorCode> => { 
+    create = async (): Promise<T | ErrorResult> => { 
         let obj: T = this.attrs;
         const err = this.validate_table(obj);
         if (err != ErrorCode.None) {
-            return err;
+            return new ErrorResult(err);
         }
 
         try {
@@ -29,14 +31,14 @@ export class DefaultModel<T extends Object> implements Queryable<T>, Serializabl
             return obj;
         } catch(err) {
             logger.error(err);
-            return ErrorCode.Internal;
+            return DBErrCode.toErrorResult(err.errno);
         }
     }
 
-    get = async (id: number): Promise<T | ErrorCode> => { 
+    get = async (id: number): Promise<T | ErrorResult> => { 
         if (id < 0) {
             logger.error("")
-            return ErrorCode.Invalid;
+            return new ErrorResult(ErrorCode.Invalid);
         }
 
         try {
@@ -45,7 +47,7 @@ export class DefaultModel<T extends Object> implements Queryable<T>, Serializabl
 
             if (results.length != 1) {
                 logger.info(`Inexists object in db. id: ${id}`); 
-                return ErrorCode.Inexists; 
+                return new ErrorResult(ErrorCode.Inexists); 
             } 
 
             this.attrs = results[0] as T;
@@ -53,50 +55,50 @@ export class DefaultModel<T extends Object> implements Queryable<T>, Serializabl
 
         } catch(err) {
             logger.error(err);
-            return ErrorCode.Internal;
+            return DBErrCode.toErrorResult(err.errno);
         }
     }
 
-    getAll = async (obj_list: Array<T>): Promise<Array<T> | ErrorCode> => { 
+    getAll = async (obj_list: Array<T>): Promise<Array<T> | ErrorResult> => { 
         //TODO: implments
         return Promise.resolve(null); 
     }
 
-    update = async (obj: T, args: object): Promise<T | ErrorCode> => {
+    update = async (obj: T, args: object): Promise<T | ErrorResult> => {
         //TODO: implements
         try {
             return obj;
         } catch(err) {
             logger.error(err);
-            return ErrorCode.Internal;
+            return DBErrCode.toErrorResult(err.errno);
         }
     }
 
-    delete = async (key: Object): Promise<ErrorCode> => { 
+    delete = async (key: Object): Promise<ErrorResult> => { 
         if (key == null) {
             logger.error("key object is null");
-            return ErrorCode.Invalid;
+            return new ErrorResult(ErrorCode.Invalid);
         }
 
         if (Object.keys(key).length != 1) {
             logger.error("number of keys the object has exceeds one");
-            return ErrorCode.Invalid;
+            return new ErrorResult(ErrorCode.Invalid);
         }
 
         try {
             const [results, _] = await pool.query(`DELETE FROM ${this.table} WHERE ?`, key);
 
-            return ErrorCode.None;
+            return new ErrorResult(ErrorCode.None);
         } catch(err) {
             logger.error(err);
-            return ErrorCode.Internal;
+            return DBErrCode.toErrorResult(err.errno);
         }
     }
 
-    query = async (query: string): Promise<Array<object> | ErrorCode> => {
+    query = async (query: string): Promise<Array<object> | ErrorResult> => {
         if (query === "") {
             logger.error("Empty SQL");
-            return ErrorCode.Internal;
+            return new ErrorResult(ErrorCode.Internal);
         }
 
         try {
@@ -109,7 +111,7 @@ export class DefaultModel<T extends Object> implements Queryable<T>, Serializabl
             return queryResults;
         } catch (err) {
             logger.error(err);
-            return ErrorCode.Internal;
+            return DBErrCode.toErrorResult(err.errno);
         }
     };
 

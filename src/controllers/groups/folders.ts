@@ -3,6 +3,7 @@ import { GroupFolders, GroupFolderAttrs } from "@models/groups/folders";
 import * as datetime from "@utils/datetime";
 import Result from "@utils/result";
 import ErrorCode from "@utils/error_code";
+import { ErrorResult } from "@utils/error_result";
 
 export async function createFolder(req: express.Request, res: express.Response) {
 
@@ -17,10 +18,10 @@ export async function getFolder(req: express.Request, res: express.Response) {
 
     let folder = new GroupFolders();
     const queryResult = await folder.get(folder_id);
-    if (queryResult instanceof GroupFolderAttrs) {
-        result = new Result(ErrorCode.None, folder);
+    if (queryResult instanceof ErrorResult) {
+        result = new Result(queryResult.errCode, null);
     } else {
-        result = new Result(queryResult, null);
+        result = new Result(ErrorCode.None, folder);
     }
 
     return result;

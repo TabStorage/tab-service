@@ -3,7 +3,7 @@ import { UserFolders, UserFolderAttrs } from "@models/users/folders";
 import * as datetime from "@utils/datetime";
 import Result from "@utils/result";
 import ErrorCode from "@utils/error_code";
-import logger from "@utils/logger";
+import { ErrorResult } from "@utils/error_result";
 
 export async function createFolder(req: express.Request): Promise<Result> {
     return Promise.resolve(null);
@@ -20,10 +20,10 @@ export async function getFolder(req: express.Request): Promise<Result> {
     const queryResult = await folder.get(folder_id);
     console.log(queryResult);
     console.log(queryResult instanceof UserFolderAttrs);
-    if (queryResult instanceof UserFolderAttrs) {
-        result = new Result(ErrorCode.None, folder);
+    if (queryResult instanceof ErrorResult) {
+        result = new Result(queryResult.errCode, null);
     } else {
-        result = new Result(queryResult, null);
+        result = new Result(ErrorCode.None, folder);
     }
 
     return result;

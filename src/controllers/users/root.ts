@@ -4,6 +4,7 @@ import Result from "@utils/result";
 import ErrorCode from "@utils/error_code";
 import { Roots, UserRootAttrs } from "@models/users/roots"
 import { UserFolders, UserFolderAttrs } from "@models/users/folders";
+import { ErrorResult } from "@utils/error_result";
 
 // TODO: fix type checking routine of all controllers
 
@@ -19,7 +20,9 @@ export async function getRoot(req: express.Request): Promise<Result> {
             WHERE user_root.user_id = ${token.user_id} AND user_entity.parent_id IS NULL;`
         let queryResults = await root.query(sql);
 
-        if (queryResults instanceof Array) {
+        if (queryResults instanceof ErrorResult) {
+            result = new Result(queryResults.errCode, null);
+        } else {
             let temp = queryResults
                 .map(result => {
                     return new UserFolders(new UserFolderAttrs(result));
@@ -30,8 +33,6 @@ export async function getRoot(req: express.Request): Promise<Result> {
                     return acc;
                 }, []);
             result = new Result(ErrorCode.None, temp);
-        } else {
-            result = new Result(queryResults, null);
         }
     }
 
@@ -51,10 +52,10 @@ export async function createRoot(req: express.Request): Promise<Result> {
             let root = new Roots(new UserRootAttrs({user_id: user_id}));
             let queryResult = await root.create();
 
-            if (queryResult instanceof UserRootAttrs) {
-                result = new Result(ErrorCode.None, null);
+            if (queryResult instanceof ErrorResult) {
+                result = new Result(queryResult.errCode, null);
             } else {
-                result = new Result(queryResult, null);
+                result = new Result(ErrorCode.None, null);
             }
         }
     }
@@ -78,7 +79,7 @@ export async function deleteRoot(req: express.Request): Promise<Result> {
             if (queryResult == null) {
                 result = new Result(ErrorCode.None, null);
             } else {
-                result = new Result(queryResult, null);
+                result = new Result(queryResult.errCode, null);
             }
         }
     }
