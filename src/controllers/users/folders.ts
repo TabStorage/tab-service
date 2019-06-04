@@ -12,7 +12,6 @@ import { login_required } from "@utils/decorators/login_required";
 // TODO: public/private & 검색 기능
 
 export class UserFolderController {
-    @login_required()
     async createFolder(req: express.Request): Promise<Result> {
         let result: Result;
         let token: TokenSchema = req.context.get("token");
@@ -83,7 +82,6 @@ export class UserFolderController {
         return result;
     }
 
-    @login_required()
     async setFolder(req: express.Request): Promise<Result> {
         // TODO: FIX here
         const root_id: number = req.context.get("root_id");
@@ -118,7 +116,6 @@ export class UserFolderController {
         return result;
     }
 
-    @login_required()
     async deleteFolder(req: express.Request): Promise<Result> {
         let result: Result;
 
