@@ -1,30 +1,61 @@
-import express from "express";
+import express, { Router } from "express";
 import async_handler from "express-async-handler";
-import { getFolder, createFolder, deleteFolder, setFolder } from "@controllers/users/folders";
+import { UserFolderController } from "@controllers/users/folders";
 import unique_key_parser from "@middlewares/unique_key_parser";
+import Result from "@utils/result";
+import { login_required } from "@utils/decorators/login_required";
+import { Routable } from "@routes/routable";
 
-let userFolderRouter = express.Router();
+export class UserFolderRouter implements Routable {
+    private router: Router;
+    private basePath: string;
+    private userFolderController: UserFolderController;
 
-userFolderRouter.param('unique_key', unique_key_parser);
+    constructor() {
+        this.basePath = "/user/folders";
+        this.router = express.Router();
+        this.userFolderController = new UserFolderController();
 
-userFolderRouter.get("/:unique_key", async_handler(async (req, res, _next) => {
-    const result = await getFolder(req);
-    result.send_to(res);
-}));
+        this.initializeRoutes();
+    }
 
-userFolderRouter.post("/", async_handler(async (req, res, _next) => {
-    const result = await createFolder(req);
-    result.send_to(res);
-}));
+    private initializeRoutes() {
+        this.router.param('unique_key', unique_key_parser);
 
-userFolderRouter.delete("/:unique_key", async_handler(async (req, res, _next) => {
-    const result = await deleteFolder(req);
-    result.send_to(res);
-}));
+        const extendPath: string = this.basePath + "/:unique_key";
 
-userFolderRouter.put("/:unique_key", async_handler(async (req, res, _next) => {
-    const result = await setFolder(req);
-    result.send_to(res);
-}));
+        this.router.get(extendPath, async_handler(this.get.bind(this)));
+        this.router.post(this.basePath, async_handler(this.post.bind(this)));
+        this.router.delete(extendPath, async_handler(this.delete.bind(this)));
+        this.router.put(extendPath, async_handler(this.put.bind(this)));
+    }
 
-export default userFolderRouter;
+    async get(req: express.Request, res: express.Response, _next: express.NextFunction) {
+        const result: Result = await this.userFolderController.getFolder(req)
+        result.send_to(res);
+    }
+
+    @login_required()
+    async post(req: express.Request, res: express.Response, _next: express.NextFunction) {
+        const result = await this.userFolderController.createFolder(req);
+        result.send_to(res);
+    }
+
+    @login_required()
+    async delete(req: express.Request, res: express.Response, _next: express.NextFunction) {
+        const result = await this.userFolderController.deleteFolder(req);
+        result.send_to(res);
+    }
+
+    @login_required()
+    async put(req: express.Request, res: express.Response, _next: express.NextFunction) {
+        const result = await this.userFolderController.setFolder(req);
+        result.send_to(res);
+    }
+
+    public routes(): Router {
+        return this.router;
+    }
+}
+
+export default UserFolderRouter;

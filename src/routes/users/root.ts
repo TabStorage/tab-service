@@ -1,27 +1,63 @@
-import express from "express";
+import express, { Router } from "express";
 import async_handler from "express-async-handler";
-import { getRoot, createRoot, deleteRoot, setRoot } from "@controllers/users/root";
+import { UserRootController } from "@controllers/users/root";
+import { Routable } from "@routes/routable";
+import { login_required } from "@utils/decorators/login_required";
+import { admin_required } from "@utils/decorators/admin_required";
 
-let userRootRouter = express.Router();
+export class UserRootRouter implements Routable {
+    private router: Router;
+    private basePath: string;
+    private userRootController: UserRootController;
 
-userRootRouter.get("/", async_handler(async (req, res, _next) => {
-    let result = await getRoot(req);
-    result.send_to(res);
-}));
+    constructor() {
+        this.basePath = "/user/root";
+        this.router = express.Router();
+        this.userRootController = new UserRootController();
 
-userRootRouter.post("/", async_handler(async (req, res, _next) => {
-    let result = await createRoot(req);
-    result.send_to(res);
-}));
+        this.initializeRoutes();
+    }
 
-userRootRouter.delete("/", async_handler(async (req, res, _next) => {
-    let result = await deleteRoot(req);
-    result.send_to(res);
-}))
+    private initializeRoutes() {
+        this.router.get(this.basePath, async_handler(this.get.bind(this)));
+        this.router.post(this.basePath, async_handler(this.post.bind(this)));
+        this.router.delete(this.basePath, async_handler(this.delete.bind(this)));
+        this.router.put(this.basePath, async_handler(this.put.bind(this)));
+    }
 
-userRootRouter.put("/", async_handler(async (req, res, _next) => {
-    let result = await setRoot(req);
-    result.send_to(res);
-}))
+    @login_required()
+    @admin_required()
+    async get(req: express.Request, res: express.Response, _next: express.NextFunction) {
+        console.log("test");
+        let result = await this.userRootController.getRoot(req);
+        console.log(result);
+        result.send_to(res);
+    }
 
-export default userRootRouter;
+    @login_required()
+    @admin_required()
+    async post(req: express.Request, res: express.Response, _next: express.NextFunction) {
+        let result = await this.userRootController.createRoot(req);
+        result.send_to(res);
+    }
+
+    @login_required()
+    @admin_required()
+    async delete(req: express.Request, res: express.Response, _next: express.NextFunction) {
+        let result = await this.userRootController.deleteRoot(req);
+        result.send_to(res);
+    }
+
+    @login_required()
+    @admin_required()
+    async put(req: express.Request, res: express.Response, _next: express.NextFunction) {
+        let result = await this.userRootController.setRoot(req);
+        result.send_to(res);
+    }
+
+    public routes(): Router {
+        return this.router;
+    }
+}
+
+export default UserRootRouter;

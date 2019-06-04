@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "setup": "npm install",
-    "start": "ts-node src/app.ts",
+    "start": "ts-node src/server.ts",
     "build": "tsc",
     "test": "mocha -r ts-node/register tests/*",
     "testWithCoverage": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha -r ts-node/register tests/**/*.test.ts && nyc report"

@@ -9,6 +9,7 @@
         "sourceMap": true,
         "outDir": "dist",
         "baseUrl": "src",
+        "experimentalDecorators": true,
         "paths": {
             "@middlewares/*": ["middlewares/*"],
             "@utils/*": ["utils/*"],
