@@ -12,7 +12,7 @@ userFolderRouter.get("/:unique_key", async_handler(async (req, res, _next) => {
     result.send_to(res);
 }));
 
-userFolderRouter.post("/:unique_key", async_handler(async (req, res, _next) => {
+userFolderRouter.post("/", async_handler(async (req, res, _next) => {
     const result = await createFolder(req);
     result.send_to(res);
 }));
