@@ -84,7 +84,7 @@ export class DefaultModel<T extends SequentiableObject> implements Queryable<T>,
         }
     }
 
-    delete = async (key: Object): Promise<ErrorResult> => { 
+    delete = async (key: object): Promise<ErrorResult> => { 
         if (key == null) {
             logger.error("key object is null");
             return new ErrorResult(ErrorCode.Invalid);

@@ -17,7 +17,7 @@ export interface UpdateFunc<T> {
 }
 
 export interface DeleteFunc {
-    (key: Object): Promise<ErrorResult>
+    (key: object): Promise<ErrorResult>
 }
 
 export interface RawQueryFunc {
