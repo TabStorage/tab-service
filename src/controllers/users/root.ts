@@ -5,8 +5,6 @@ import ErrorCode from "@utils/error_code";
 import { Roots, UserRootAttrs } from "@models/users/roots"
 import { UserFolders, UserFolderAttrs } from "@models/users/folders";
 import { ErrorResult } from "@utils/error_result";
-import { login_required } from "@utils/decorators/login_required";
-import { admin_required } from "@utils/decorators/admin_required";
 
 // TODO: fix type checking routine of all controllers
 
@@ -69,13 +67,6 @@ export class UserRootController{
         } else {
             result = new Result(queryResult.errCode, null);
         }
-
-        return result;
-    }
-
-    async setRoot(req: express.Request): Promise<Result> {
-        let result: Result;
-        let token: TokenSchema = req.context.get("token");
 
         return result;
     }

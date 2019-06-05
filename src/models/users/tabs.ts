@@ -17,6 +17,7 @@ export class UserTabAttrs implements EntityAttrs {
     root_id: number;
     is_public: boolean;
     version: number;
+    thumbnail_url: string;
     modified_at: string;
     owner_id: number;
 
@@ -26,7 +27,7 @@ export class UserTabAttrs implements EntityAttrs {
 export class UserTabs extends DefaultModel<UserTabAttrs> {
     public constructor(attrs?: UserTabAttrs) {
         let white_list = 
-            ["id", "name", "url", "owner_id", "is_public", "version", "modified_at"];
+            ["id", "name", "url", "thumbnail_url", "owner_id", "is_public", "version", "modified_at"];
 
         if (attrs != undefined)
             super(attrs, "user_entity", white_list);

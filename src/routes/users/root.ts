@@ -22,15 +22,12 @@ export class UserRootRouter implements Routable {
         this.router.get(this.basePath, async_handler(this.get.bind(this)));
         this.router.post(this.basePath, async_handler(this.post.bind(this)));
         this.router.delete(this.basePath, async_handler(this.delete.bind(this)));
-        this.router.put(this.basePath, async_handler(this.put.bind(this)));
     }
 
     @login_required()
     @admin_required()
     async get(req: express.Request, res: express.Response, _next: express.NextFunction) {
-        console.log("test");
         let result = await this.userRootController.getRoot(req);
-        console.log(result);
         result.send_to(res);
     }
 
@@ -45,13 +42,6 @@ export class UserRootRouter implements Routable {
     @admin_required()
     async delete(req: express.Request, res: express.Response, _next: express.NextFunction) {
         let result = await this.userRootController.deleteRoot(req);
-        result.send_to(res);
-    }
-
-    @login_required()
-    @admin_required()
-    async put(req: express.Request, res: express.Response, _next: express.NextFunction) {
-        let result = await this.userRootController.setRoot(req);
         result.send_to(res);
     }
 
