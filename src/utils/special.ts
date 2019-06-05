@@ -19,6 +19,11 @@ export function pack_key(entity: EntityAttrs): string {
     return Buffer.from(packed_string).toString('base64');
 }
 
+export function pack_key_with_raw(root_id: number, target_id: number, version: number): string {
+    let packed_string = `${root_id}_${target_id}_${version}`;
+    return Buffer.from(packed_string).toString('base64');
+}
+
 export function unpack_key(key: string): MetaInfo {
     let result = new MetaInfo();
     try {

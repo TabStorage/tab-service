@@ -6,7 +6,7 @@ import ErrorCode from "@utils/error_code";
 import { ErrorResult } from "@utils/error_result";
 import { TokenSchema } from "@middlewares/token_validator";
 import logger from "@utils/logger";
-import { login_required } from "@utils/decorators/login_required";
+import { pack_key_with_raw } from "@utils/special";
 
 // TODO: Role Permission 검증 루틴 추가 필요
 // TODO: public/private & 검색 기능
@@ -25,7 +25,7 @@ export class UserFolderController {
             let parent_id: number = null;
             if (req.body.parent_id !== undefined)
                 parent_id = parseInt(req.body.parent_id);
-            let is_tab: boolean = true;
+            let is_tab: boolean = false;
 
             let is_public: boolean = (req.body.is_public === "true");
             let version: number = 1;
@@ -47,6 +47,11 @@ export class UserFolderController {
             if (queryResult instanceof ErrorResult) {
                 result = new Result(queryResult.errCode, null);
             } else {
+                // TODO: Refactoring to more efficiently way
+                const packed_url: string = 
+                    pack_key_with_raw(queryResult.root_id, queryResult.id, queryResult.version);
+                folder.update(queryResult.id, {url: packed_url});
+
                 result = new Result(ErrorCode.None, null);
             }
         } catch(err) {

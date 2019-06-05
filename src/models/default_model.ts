@@ -27,8 +27,9 @@ export class DefaultModel<T extends SequentiableObject> implements Queryable<T>,
         }
 
         try {
-            let sql: string = `INSERT INTO ${this.table} SET ?`;
-            const [result] = await pool.query(sql, obj);
+            let sql: string = `INSERT INTO ${this.table} SET ?;`;
+            const [result, _fields] = await pool.query(sql, obj);
+            obj.id = result.insertId;
             return obj;
         } catch(err) {
             return DBErrCode.toErrorResult(err);
