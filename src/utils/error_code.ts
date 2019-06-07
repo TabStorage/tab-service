@@ -6,6 +6,7 @@ enum ErrorCode {
     Duplicated = 4,
     Empty = 5,
     Invalid = 6,
+    InvalidPermission = 7,
 }
 
 namespace ErrorCode {

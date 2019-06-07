@@ -2,22 +2,20 @@ import express from "express";
 import { TokenSchema } from "@middlewares/token_validator";
 import Result from "@utils/result";
 import ErrorCode from "@utils/error_code";
-import { Roots, UserRootAttrs } from "@models/users/roots"
+import { Drives, UserDriveAttrs } from "@models/users/drive"
 import { UserFolders, UserFolderAttrs } from "@models/users/folders";
 import { ErrorResult } from "@utils/error_result";
 
-// TODO: fix type checking routine of all controllers
-
-export class UserRootController{
+export class UserDriveController{
     async getRoot(req: express.Request): Promise<Result> {
         let result: Result;
         let token: TokenSchema = req.context.get("token");
         
-        let root = new Roots();
-        let sql = `SELECT user_entity.* FROM user_entity JOIN user_root \
-            ON user_entity.root_id = user_root.id \
-            WHERE user_root.user_id = ${token.user_id} AND user_entity.parent_id IS NULL;`
-        let queryResults = await root.query(sql);
+        let drive = new Drives();
+        let sql = `SELECT user_entity.* FROM user_entity JOIN user_drive \
+            ON user_entity.drive_id = user_drive.id \
+            WHERE user_drive.user_id = ${token.user_id} AND user_entity.parent_id IS NULL;`
+        let queryResults = await drive.query(sql);
 
         if (queryResults instanceof ErrorResult) {
             result = new Result(queryResults.errCode, null);
@@ -42,8 +40,8 @@ export class UserRootController{
         let token: TokenSchema = req.context.get("token");
 
         const user_id: number = parseInt(req.body.user_id);
-        let root = new Roots(new UserRootAttrs({user_id: user_id}));
-        let queryResult = await root.create();
+        let drive = new Drives(new UserDriveAttrs({user_id: user_id}));
+        let queryResult = await drive.create();
 
         if (queryResult instanceof ErrorResult) {
             result = new Result(queryResult.errCode, null);
@@ -59,8 +57,8 @@ export class UserRootController{
         let token: TokenSchema = req.context.get("token");
         const user_id: number = parseInt(req.body.user_id);
 
-        let root = new Roots()
-        let queryResult = await root.delete({user_id: user_id});
+        let drive = new Drives()
+        let queryResult = await drive.delete({user_id: user_id});
         
         if (queryResult == null) {
             result = new Result(ErrorCode.None, null);

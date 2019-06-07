@@ -1,19 +1,19 @@
 import express, { Router } from "express";
 import async_handler from "express-async-handler";
-import { UserRootController } from "@controllers/users/root";
+import { UserDriveController } from "@controllers/users/drive";
 import { Routable } from "@routes/routable";
 import { login_required } from "@utils/decorators/login_required";
 import { admin_required } from "@utils/decorators/admin_required";
 
-export class UserRootRouter implements Routable {
+export class UserDriveRouter implements Routable {
     private router: Router;
     private basePath: string;
-    private userRootController: UserRootController;
+    private userDriveController: UserDriveController;
 
     constructor() {
-        this.basePath = "/user/root";
+        this.basePath = "/user/drive";
         this.router = express.Router();
-        this.userRootController = new UserRootController();
+        this.userDriveController = new UserDriveController();
 
         this.initializeRoutes();
     }
@@ -27,21 +27,21 @@ export class UserRootRouter implements Routable {
     @login_required()
     @admin_required()
     async get(req: express.Request, res: express.Response, _next: express.NextFunction) {
-        let result = await this.userRootController.getRoot(req);
+        let result = await this.userDriveController.getRoot(req);
         result.send_to(res);
     }
 
     @login_required()
     @admin_required()
     async post(req: express.Request, res: express.Response, _next: express.NextFunction) {
-        let result = await this.userRootController.createRoot(req);
+        let result = await this.userDriveController.createRoot(req);
         result.send_to(res);
     }
 
     @login_required()
     @admin_required()
     async delete(req: express.Request, res: express.Response, _next: express.NextFunction) {
-        let result = await this.userRootController.deleteRoot(req);
+        let result = await this.userDriveController.deleteRoot(req);
         result.send_to(res);
     }
 
@@ -50,4 +50,4 @@ export class UserRootRouter implements Routable {
     }
 }
 
-export default UserRootRouter;
+export default UserDriveRouter;

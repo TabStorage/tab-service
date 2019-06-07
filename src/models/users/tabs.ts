@@ -14,7 +14,7 @@ export class UserTabAttrs implements EntityAttrs {
     name: string;
     url: string;
     parent_id: number;
-    root_id: number;
+    drive_id: number;
     is_public: boolean;
     version: number;
     thumbnail_url: string;

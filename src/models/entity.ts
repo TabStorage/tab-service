@@ -9,7 +9,7 @@ export interface EntityAttrs {
     modified_at: string
     owner_id: number
     parent_id: number
-    root_id: number
+    drive_id: number
 }
 
 export default EntityAttrs;

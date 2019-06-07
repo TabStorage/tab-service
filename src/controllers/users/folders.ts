@@ -7,9 +7,12 @@ import { ErrorResult } from "@utils/error_result";
 import { TokenSchema } from "@middlewares/token_validator";
 import logger from "@utils/logger";
 import { pack_key_with_raw } from "@utils/special";
+import { Drives } from "@models/users/drive";
 
 // TODO: Role Permission 검증 루틴 추가 필요
 // TODO: public/private & 검색 기능
+
+// TODO: Role Permission을 Redis를 통해 캐시하자
 
 export class UserFolderController {
     async createFolder(req: express.Request): Promise<Result> {
@@ -21,7 +24,18 @@ export class UserFolderController {
 
         try {
             let name: string = req.body.name;
-            let root_id: number = parseInt(req.body.root_id);
+            let drive_id: number = parseInt(req.body.drive_id);
+
+            const drive = new Drives();
+            let driveResult = await drive.get(drive_id);
+            if (driveResult instanceof ErrorResult) {
+                return new Result(driveResult.errCode, null);
+            } else {
+                if (token.user_id != driveResult.user_id) {
+                    return new Result(ErrorCode.InvalidPermission, null);
+                }
+            }
+
             let parent_id: number = null;
             if (req.body.parent_id !== undefined)
                 parent_id = parseInt(req.body.parent_id);
@@ -35,7 +49,7 @@ export class UserFolderController {
                 owner_id: owner_id,
                 name: name,
                 url: "",
-                root_id: root_id,
+                drive_id: drive_id,
                 parent_id: parent_id,
                 is_tab: is_tab,
                 is_public: is_public,
@@ -49,7 +63,7 @@ export class UserFolderController {
             } else {
                 // TODO: Refactoring to more efficiently way
                 const packed_url: string = 
-                    pack_key_with_raw(queryResult.root_id, queryResult.id, queryResult.version);
+                    pack_key_with_raw(drive_id, queryResult.id, queryResult.version);
                 folder.update(queryResult.id, {url: packed_url});
 
                 result = new Result(ErrorCode.None, null);
@@ -72,7 +86,7 @@ export class UserFolderController {
         }
         */
 
-        const root_id: number = req.context.get("root_id");
+        const drive_id: number = req.context.get("drive_id");
         const folder_id: number = req.context.get("target_id");
         const version: number = req.context.get("version");
 
@@ -81,6 +95,17 @@ export class UserFolderController {
         if (queryResult instanceof ErrorResult) {
             result = new Result(queryResult.errCode, null);
         } else {
+            // private 인 경우는 본인인지 검증한다.
+            if (!queryResult.is_public) {
+                let token: TokenSchema = req.context.get("token");
+                if (token === null || token === undefined) {
+                    return new Result(ErrorCode.InvalidToken, null);
+                } else if(token.user_id != queryResult.owner_id) {
+                    return new Result(ErrorCode.InvalidPermission, null);
+                }
+            }
+
+            // public이거나 인증이 완료된 경우
             result = new Result(ErrorCode.None, folder);
         }
 
@@ -88,8 +113,7 @@ export class UserFolderController {
     }
 
     async setFolder(req: express.Request): Promise<Result> {
-        // TODO: FIX here
-        const root_id: number = req.context.get("root_id");
+        const drive_id: number = req.context.get("drive_id");
         const folder_id: number = req.context.get("target_id");
         const version: number = req.context.get("version");
 

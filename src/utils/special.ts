@@ -7,7 +7,7 @@ import { EntityAttrs } from "@models/entity";
 
 export class MetaInfo {
     constructor() { };
-    root_id: number;
+    drive_id: number;
     target_id: number;
     version: number;
     has_err: boolean;
@@ -15,12 +15,12 @@ export class MetaInfo {
 }
 
 export function pack_key(entity: EntityAttrs): string {
-    let packed_string = `${entity.root_id}_${entity.id}_${entity.version}`;
+    let packed_string = `${entity.drive_id}_${entity.id}_${entity.version}`;
     return Buffer.from(packed_string).toString('base64');
 }
 
-export function pack_key_with_raw(root_id: number, target_id: number, version: number): string {
-    let packed_string = `${root_id}_${target_id}_${version}`;
+export function pack_key_with_raw(drive_id: number, target_id: number, version: number): string {
+    let packed_string = `${drive_id}_${target_id}_${version}`;
     return Buffer.from(packed_string).toString('base64');
 }
 
@@ -36,7 +36,7 @@ export function unpack_key(key: string): MetaInfo {
             return result;
         }
 
-        result.root_id = parseInt(meta_arr[0]);
+        result.drive_id = parseInt(meta_arr[0]);
         result.target_id = parseInt(meta_arr[1]);
         result.version = parseInt(meta_arr[2]);
 

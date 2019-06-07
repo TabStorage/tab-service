@@ -13,7 +13,7 @@ export class GroupFolderAttrs implements EntityAttrs {
     // used for tab stroage link
     url: string;
     parent_id: number;
-    root_id: number;
+    drive_id: number;
     is_public: boolean;
     version: number;
     modified_at: string;

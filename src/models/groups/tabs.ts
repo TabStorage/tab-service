@@ -12,7 +12,7 @@ export class GroupTabAttrs implements EntityAttrs {
     name: string;
     url: string;
     parent_id: number;
-    root_id: number;
+    drive_id: number;
     is_public: boolean;
     version: number;
     modified_at: string;

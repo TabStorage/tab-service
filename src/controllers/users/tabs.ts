@@ -7,6 +7,7 @@ import ErrorCode from "@utils/error_code";
 import { UserTabs } from "@models/groups/tabs";
 import { UserTabAttrs } from "@models/users/tabs";
 import { ErrorResult } from "@utils/error_result";
+import { Drives } from "@models/users/drive";
 
 export class UserTabController {
     async createTab(req: express.Request): Promise<Result> {
@@ -18,7 +19,16 @@ export class UserTabController {
 
         try {
             let name: string = req.body.name;
-            let root_id: number = parseInt(req.body.root_id);
+            let drive_id: number = parseInt(req.body.drive_id);
+
+            const drive = new Drives();
+            let driveResult = await drive.get(drive_id);
+            if (driveResult instanceof ErrorResult) {
+                return new Result(driveResult.errCode, null);
+            } else if (token.user_id != driveResult.user_id) {
+                return new Result(ErrorCode.InvalidPermission, null);
+            }
+
             let parent_id: number = null;
             if (req.body.parent_id !== undefined)
                 parent_id = parseInt(req.body.parent_id);
@@ -34,7 +44,7 @@ export class UserTabController {
             let tab = new UserTabs(new UserTabAttrs({
                 owner_id: owner_id,
                 name: name,
-                root_id: root_id,
+                drive_id: drive_id,
                 parent_id: parent_id,
                 is_tab: is_tab,
                 url: url,

@@ -13,7 +13,7 @@ CREATE TABLE user_entity (
     name VARCHAR(255) NOT NULL,
     url VARCHAR(255) NOT NULL,
     owner_id INT unsigned NOT NULL,
-    root_id INT unsigned DEFAULT NULL,
+    drive_id INT unsigned DEFAULT NULL,
     parent_id INT unsigned DEFAULT NULL,
     thumbnail_url VARCHAR(255) DEFAULT NULL,
     is_tab BOOLEAN NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE user_entity (
 
     PRIMARY KEY (id),
     FOREIGN KEY (parent_id) REFERENCES user_entity(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (root_id) REFERENCES user_root(id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (drive_id) REFERENCES user_drive(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE group_entity (
@@ -32,7 +32,7 @@ CREATE TABLE group_entity (
     name VARCHAR(255) NOT NULL,
     url VARCHAR(255) NOT NULL,
     owner_id INT unsigned NOT NULL,
-    root_id INT unsigned DEFAULT NULL,
+    drive_id INT unsigned DEFAULT NULL,
     parent_id INT unsigned DEFAULT NULL,
     thumbnail_url VARCHAR(255) DEFAULT NULL,
     is_tab BOOLEAN NOT NULL,
@@ -43,5 +43,5 @@ CREATE TABLE group_entity (
 
     PRIMARY KEY (id),
     FOREIGN KEY (parent_id) REFERENCES group_entity(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (root_id) REFERENCES group_root(id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (drive_id) REFERENCES group_drive(id) ON UPDATE CASCADE ON DELETE CASCADE
 )
