@@ -77,11 +77,26 @@ export class UserTabController {
 
     async deleteTab(req: express.Request): Promise<Result> {
         let result: Result;
+
+        // TODO: role permission 검증
+        const tab_id: number = req.context.get("target_id");
+
+        const tab = new UserTabs();
+        let queryResult = await tab.delete({id: tab_id});
+        if (queryResult == null) {
+            result = new Result(ErrorCode.None, null);
+        } else {
+            result = new Result(queryResult.errCode, null);
+        }
+
         return result;
     }
 
     async setTab(req: express.Request): Promise<Result> {
         let result: Result;
+
+        // TODO: role permission 검증
+
         return result;
     }
 }

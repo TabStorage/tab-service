@@ -79,13 +79,6 @@ export class UserFolderController {
     async getFolder(req: express.Request): Promise<Result> {
         let result: Result;
 
-        /*
-        let token: TokenSchema = req.context.get("token");
-        if (token === null) {
-            result = new Result(ErrorCode.InvalidToken, null);
-        }
-        */
-
         const drive_id: number = req.context.get("drive_id");
         const folder_id: number = req.context.get("target_id");
         const version: number = req.context.get("version");
