@@ -27,21 +27,21 @@ export class UserDriveRouter implements Routable {
     @login_required()
     @admin_required()
     async get(req: express.Request, res: express.Response, _next: express.NextFunction) {
-        let result = await this.userDriveController.getRoot(req);
+        let result = await this.userDriveController.getDrive(req);
         result.send_to(res);
     }
 
     @login_required()
     @admin_required()
     async post(req: express.Request, res: express.Response, _next: express.NextFunction) {
-        let result = await this.userDriveController.createRoot(req);
+        let result = await this.userDriveController.createDrive(req);
         result.send_to(res);
     }
 
     @login_required()
     @admin_required()
     async delete(req: express.Request, res: express.Response, _next: express.NextFunction) {
-        let result = await this.userDriveController.deleteRoot(req);
+        let result = await this.userDriveController.deleteDrive(req);
         result.send_to(res);
     }
 

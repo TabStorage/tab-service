@@ -7,7 +7,7 @@ import { UserFolders, UserFolderAttrs } from "@models/users/folders";
 import { ErrorResult } from "@utils/error_result";
 
 export class UserDriveController{
-    async getRoot(req: express.Request): Promise<Result> {
+    async getDrive(req: express.Request): Promise<Result> {
         let result: Result;
         let token: TokenSchema = req.context.get("token");
         
@@ -35,7 +35,7 @@ export class UserDriveController{
         return result;
     }
 
-    async createRoot(req: express.Request): Promise<Result> {
+    async createDrive(req: express.Request): Promise<Result> {
         let result: Result;
         let token: TokenSchema = req.context.get("token");
 
@@ -52,7 +52,7 @@ export class UserDriveController{
         return result;
     }
 
-    async deleteRoot(req: express.Request): Promise<Result> {
+    async deleteDrive(req: express.Request): Promise<Result> {
         let result: Result;
         let token: TokenSchema = req.context.get("token");
         const user_id: number = parseInt(req.body.user_id);
