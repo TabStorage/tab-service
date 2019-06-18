@@ -1,6 +1,20 @@
 version: '3.1'
 
 services:
+  db:
+    image: mysql:latest
+    restart: always
+    ports:
+      -30960:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=tabstorage
+      - MYSQL_USER=kernelgarden
+      - MYSQL_PASSWORD=tabstorage
+    volumes:
+      - ./priv/sql/create_drive.sql
+      - ./priv/sql/create_entity.sql
+      - ./priv/sql/entity_dummy.sql
+
   app:
     build: .
     command: npm run build
