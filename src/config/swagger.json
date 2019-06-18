@@ -5,6 +5,13 @@
     "version": "1.0.0",
     "description": "Tab Service API Specification"
   },
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "x-access-token"
+    }
+  },
   "host": "localhost",
   "basePath": "/api",
   "schemes": ["http", "https"],
@@ -68,6 +75,9 @@
       "post": {
         "tags": ["User Folder"],
         "summary": "Create a new folder",
+        "security": [
+          { "jwt": [] }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -94,6 +104,9 @@
       "put": {
         "tags": ["User Folder"],
         "summary": "Modify info of folder",
+        "security": [
+          { "jwt": [] }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -120,6 +133,9 @@
       "delete": {
         "tags": ["User Folder"],
         "summary": "Delete a folder",
+        "security": [
+          { "jwt": [] }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -174,6 +190,9 @@
       "post": {
         "tags": ["User Tab"],
         "summary": "Create a new tab",
+        "security": [
+          { "jwt": [] }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -200,6 +219,9 @@
       "put": {
         "tags": ["User Tab"],
         "summary": "Modify info of tab",
+        "security": [
+          { "jwt": [] }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -226,6 +248,9 @@
       "delete": {
         "tags": ["User Tab"],
         "summary": "Delete a tab",
+        "security": [
+          { "jwt": [] }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -254,6 +279,9 @@
       "get": {
         "tags": ["User Drive"],
         "summary": "Get user drive info",
+        "security": [
+          { "jwt": [] }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -269,6 +297,9 @@
       "post": {
         "tags": ["User Drive"],
         "summary": "Create a new user drive",
+        "security": [
+          { "jwt": [] }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -284,6 +315,9 @@
       "put": {
         "tags": ["User Drive"],
         "summary": "Modify info of user drive",
+        "security": [
+          { "jwt": [] }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -299,6 +333,9 @@
       "delete": {
         "tags": ["User Drive"],
         "summary": "Delete a u[ser drive",
+        "security": [
+          { "jwt": [] }
+        ],
         "responses": {
           "200": {
             "description": "OK"
