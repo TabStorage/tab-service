@@ -84,22 +84,34 @@ export class UserFolderController {
         const version: number = req.context.get("version");
 
         let folder = new UserFolders();
-        const queryResult = await folder.get(folder_id);
+        let sql = `SELECT * FROM user_entity WHERE parent_id = ${folder_id}`;
+        const queryResult = await folder.query(sql);
         if (queryResult instanceof ErrorResult) {
             result = new Result(queryResult.errCode, null);
         } else {
-            // private 인 경우는 본인인지 검증한다.
-            if (!queryResult.is_public) {
-                let token: TokenSchema = req.context.get("token");
-                if (token === null || token === undefined) {
-                    return new Result(ErrorCode.InvalidToken, null);
-                } else if(token.user_id != queryResult.owner_id) {
-                    return new Result(ErrorCode.InvalidPermission, null);
-                }
-            }
+            let token: TokenSchema = req.context.get("token");
 
+            let folders = queryResult
+                .map(result => {
+                    return new UserFolderAttrs(result);
+                })
+                .reduce((acc, folder: UserFolderAttrs) => 
+                {
+                    // private인 경우는 본인인지 검증한다.
+                    if (folder.is_public) {
+                        acc.push(new UserFolders(folder));
+                    } else {
+                        if (token !== null && token !== undefined 
+                            && token.user_id === folder.owner_id) {
+                                acc.push(new UserFolderAttrs(folder));
+                        }
+                    }
+
+                    return acc;
+                }, []);
+            
             // public이거나 인증이 완료된 경우
-            result = new Result(ErrorCode.None, folder);
+            result = new Result(ErrorCode.None, folders);
         }
 
         return result;
