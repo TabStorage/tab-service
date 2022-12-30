@@ -46,7 +46,7 @@
     "@types/swagger-jsdoc": "0.0.2",
     "@types/swagger-ui-express": "^3.0.0",
     "chai": "^4.2.0",
-    "mocha": "^6.1.4",
+    "mocha": "^10.2.0",
     "nyc": "^14.1.1",
     "swagger-jsdoc": "^3.2.9",
     "swagger-ui-express": "^4.0.3",
