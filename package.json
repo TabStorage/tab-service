@@ -50,7 +50,7 @@
     "nyc": "^14.1.1",
     "swagger-jsdoc": "^3.2.9",
     "swagger-ui-express": "^4.0.3",
-    "ts-loader": "^6.0.1",
+    "ts-loader": "^9.4.2",
     "ts-node": "^8.1.0",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
